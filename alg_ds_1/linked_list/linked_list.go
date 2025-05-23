@@ -2,8 +2,6 @@ package main
 
 import (
 	"errors"
-	"os"
-	"reflect"
 )
 
 type Node struct {
@@ -48,12 +46,12 @@ func (l1 *LinkedList) Find(n int) (Node, error) {
 	return Node{}, errors.New("node not found")
 }
 
-func (l1 *LinkedList) FindAll(n int) []*Node {
-	var nodes []*Node
+func (l1 *LinkedList) FindAll(n int) []Node {
+	var nodes []Node
 	curr := l1.head
 	for curr != nil {
 		if curr.value == n {
-			nodes = append(nodes, curr)
+			nodes = append(nodes, *curr) // разыменовываем указатель
 		}
 		curr = curr.next
 	}
