@@ -17,6 +17,7 @@ type LinkedList struct {
 func (l *LinkedList) AddInTail(item Node) {
 	if l.head == nil {
 		l.head = &item
+		l.tail = &item
 	} else {
 		l.tail.next = &item
 		l.tail = &item
