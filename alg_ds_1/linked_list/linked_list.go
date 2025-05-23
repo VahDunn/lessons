@@ -51,7 +51,7 @@ func (l1 *LinkedList) FindAll(n int) []Node {
 	curr := l1.head
 	for curr != nil {
 		if curr.value == n {
-			nodes = append(nodes, *curr) // разыменовываем указатель
+			nodes = append(nodes, *curr)
 		}
 		curr = curr.next
 	}
