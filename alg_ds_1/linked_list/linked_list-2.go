@@ -10,7 +10,7 @@ func (l1 *LinkedList) SumTwoLists(l2 *LinkedList) *LinkedList {
 	second := l2.head
 	for first != nil && second != nil {
 		newNode := Node{value: first.value + second.value}
-		res.AddInTail(&newNode)
+		res.AddInTail(newNode)
 		first = first.next
 		second = second.next
 	}

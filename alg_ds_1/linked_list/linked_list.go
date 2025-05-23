@@ -16,14 +16,14 @@ type LinkedList struct {
 	tail *Node
 }
 
-func (l1 *LinkedList) AddInTail(item *Node) {
+func (l1 *LinkedList) AddInTail(item Node) {
 	item.next = nil
 	if l1.head == nil {
-		l1.head = item
-		l1.tail = item
+		l1.head = &item
+		l1.tail = &item
 	} else {
-		l1.tail.next = item
-		l1.tail = item
+		l1.tail.next = &item
+		l1.tail = &item
 	}
 }
 
@@ -37,15 +37,15 @@ func (l1 *LinkedList) Count() int {
 	return count
 }
 
-func (l1 *LinkedList) Find(n int) (*Node, error) {
+func (l1 *LinkedList) Find(n int) (Node, error) {
 	curr := l1.head
 	for curr != nil {
 		if curr.value == n {
-			return curr, nil
+			return *curr, nil
 		}
 		curr = curr.next
 	}
-	return nil, errors.New("node not found")
+	return Node{}, errors.New("node not found")
 }
 
 func (l1 *LinkedList) FindAll(n int) []*Node {
@@ -64,7 +64,6 @@ func (l1 *LinkedList) Delete(n int, all bool) {
 	if l1.head == nil {
 		return
 	}
-	// Удаление из начала списка
 	for l1.head != nil && l1.head.value == n {
 		l1.head = l1.head.next
 		if l1.head == nil {
@@ -78,7 +77,7 @@ func (l1 *LinkedList) Delete(n int, all bool) {
 			return
 		}
 	}
-	// Удаление из "середины"
+
 	prev := l1.head
 	if prev == nil {
 		l1.tail = nil
@@ -102,25 +101,25 @@ func (l1 *LinkedList) Delete(n int, all bool) {
 	}
 }
 
-func (l1 *LinkedList) Insert(after *Node, add *Node) {
+func (l1 *LinkedList) Insert(after *Node, add Node) {
 	if l1.head == nil {
-		l1.head = add
-		l1.tail = add
+		l1.head = &add
+		l1.tail = &add
 		add.next = nil
 		return
 	}
 	add.next = after.next
-	after.next = add
+	after.next = &add
 	if l1.tail == after {
-		l1.tail = add
+		l1.tail = &add
 	}
 }
 
-func (l1 *LinkedList) InsertFirst(first *Node) {
+func (l1 *LinkedList) InsertFirst(first Node) {
 	first.next = l1.head
-	l1.head = first
+	l1.head = &first
 	if l1.tail == nil {
-		l1.tail = first
+		l1.tail = &first
 	}
 }
 
