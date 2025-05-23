@@ -4,8 +4,6 @@ import (
 	"errors"
 )
 
-// ОПИСАНИЕ СТРУКТУР
-
 type Node struct {
 	next  *Node
 	value int
@@ -15,8 +13,6 @@ type LinkedList struct {
 	head *Node
 	tail *Node
 }
-
-// МЕТОДЫ
 
 func (l1 *LinkedList) AddInTail(item *Node) {
 	item.next = nil
