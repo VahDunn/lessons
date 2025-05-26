@@ -93,3 +93,7 @@ func (da *DynArray[T]) GetItem(index int) (T, error) {
 	result = da.array[index]
 	return result, nil
 }
+
+//Оценка сложности:
+//Insert - В худшем случае (вставка в начало) - O(n), так как нужно сдвинуть все элементы
+//Remove: В худшем случае (удаление из начала) - O(n), так как нужно сдвинуть все элементы
