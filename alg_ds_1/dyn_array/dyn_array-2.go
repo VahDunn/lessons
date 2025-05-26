@@ -34,14 +34,14 @@ func (ba *BankArray[T]) Append(item T) {
 func (ba *BankArray[T]) Get(index int) (T, error) {
 	var zero T
 	if index < 0 || index >= ba.size {
-		return zero, fmt.Errorf("index out of bounds")
+		return zero, fmt.Errorf("index out of range")
 	}
 	return ba.array[index], nil
 }
 
 func (ba *BankArray[T]) Remove(index int) error {
 	if index < 0 || index >= ba.size {
-		return fmt.Errorf("index out of bounds")
+		return fmt.Errorf("index out of range")
 	}
 	copy(ba.array[index:], ba.array[index+1:ba.size])
 	ba.size--
@@ -95,7 +95,7 @@ func (ma *MultiArray[T]) Get(indices ...int) (T, error) {
 	stride := 1
 	for i := ma.dimensions - 1; i >= 0; i-- {
 		if indices[i] < 0 || indices[i] >= ma.shape[i] {
-			return zero, fmt.Errorf("index %d out of bounds for dimension %d", indices[i], i)
+			return zero, fmt.Errorf("index %d out of range for dimension %d", indices[i], i)
 		}
 		index += indices[i] * stride
 		stride *= ma.shape[i]
@@ -113,7 +113,7 @@ func (ma *MultiArray[T]) Set(value T, indices ...int) error {
 	stride := 1
 	for i := ma.dimensions - 1; i >= 0; i-- {
 		if indices[i] < 0 || indices[i] >= ma.shape[i] {
-			return fmt.Errorf("index %d out of bounds for dimension %d", indices[i], i)
+			return fmt.Errorf("index %d out of range for dimension %d", indices[i], i)
 		}
 		index += indices[i] * stride
 		stride *= ma.shape[i]
