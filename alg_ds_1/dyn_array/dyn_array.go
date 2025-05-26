@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	
 )
 
 const (
@@ -60,6 +60,9 @@ func (da *DynArray[T]) Insert(itm T, index int) error {
 }
 
 func (da *DynArray[T]) Remove(index int) error {
+	if da.count == 0 {
+		return fmt.Errorf("index out of range")
+	}
 	if index > da.count || index < 0 {
 		return fmt.Errorf("index '%d' out of range", index)
 	}
