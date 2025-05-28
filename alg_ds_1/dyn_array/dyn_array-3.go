@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"os"
+	"testing"
+)
 
 func TestDynArray(t *testing.T) {
 	t.Run("Init", func(t *testing.T) {

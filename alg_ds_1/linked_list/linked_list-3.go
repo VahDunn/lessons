@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestAddInTail(t *testing.T) {
 	l := LinkedList{}
