@@ -98,18 +98,20 @@ func (q *Queue[T]) Size() int {
 // Задание 6 - циклическая очередь через статический массив (то есть нужна проерка полная/неполная)
 // через 2 указателя - один указывает на начало очереди, второй - на конец
 // если размер очереди становится равным 0, указатели сбрасываются
+// Также здесь, как и в обычной круговой очереди, используется остаток деления емкости очереди на индекс для
+// зацикливания
 
-type CircularQueue struct {
-	data     []interface{}
+type CircularQueue[T any] struct {
+	data     []T
 	front    int
 	rear     int
 	size     int
 	capacity int
 }
 
-func NewCircularQueue(capacity int) *CircularQueue {
-	return &CircularQueue{
-		data:     make([]interface{}, capacity),
+func NewCircularQueue[T any](capacity int) *CircularQueue[T] {
+	return &CircularQueue[T]{
+		data:     make([]T, capacity),
 		front:    -1,
 		rear:     -1,
 		size:     0,
@@ -117,17 +119,17 @@ func NewCircularQueue(capacity int) *CircularQueue {
 	}
 }
 
-func (q *CircularQueue) IsEmpty() bool {
+func (q *CircularQueue[T]) IsEmpty() bool {
 	return q.size == 0
 }
 
-func (q *CircularQueue) IsFull() bool {
+func (q *CircularQueue[T]) IsFull() bool {
 	return q.size == q.capacity
 }
 
-func (q *CircularQueue) Enqueue(item interface{}) bool {
+func (q *CircularQueue[T]) Enqueue(item T) error {
 	if q.IsFull() {
-		return false
+		return errors.New("queue is full")
 	}
 
 	if q.IsEmpty() {
@@ -137,12 +139,13 @@ func (q *CircularQueue) Enqueue(item interface{}) bool {
 	q.rear = (q.rear + 1) % q.capacity
 	q.data[q.rear] = item
 	q.size++
-	return true
+	return nil
 }
 
-func (q *CircularQueue) Dequeue() (interface{}, bool) {
+func (q *CircularQueue[T]) Dequeue() (T, error) {
+	var zero T
 	if q.IsEmpty() {
-		return nil, false
+		return zero, errors.New("queue is empty")
 	}
 
 	item := q.data[q.front]
@@ -153,12 +156,13 @@ func (q *CircularQueue) Dequeue() (interface{}, bool) {
 		q.front = (q.front + 1) % q.capacity
 	}
 	q.size--
-	return item, true
+	return item, nil
 }
 
-func (q *CircularQueue) Peek() (interface{}, bool) {
+func (q *CircularQueue[T]) Peek() (T, error) {
+	var zero T
 	if q.IsEmpty() {
-		return nil, false
+		return zero, errors.New("queue is empty")
 	}
-	return q.data[q.front], true
+	return q.data[q.front], nil
 }
