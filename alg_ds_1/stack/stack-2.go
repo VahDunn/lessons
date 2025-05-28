@@ -169,7 +169,7 @@ func isBalanced(s string) bool {
 	return stack.Size() == 0
 }
 
-// Задание 8 - Постфиксная запись выражения
+// Задание 8 - Постфиксная запись выражения (результат выражения 59)
 func evaluatePostfix(expr string) (int, error) {
 	s1 := NewStack[string]()
 	s2 := NewStack[int]()
