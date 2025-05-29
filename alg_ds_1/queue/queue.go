@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"io"
 	"os"
 	//	"fmt" включите если используете
 )
