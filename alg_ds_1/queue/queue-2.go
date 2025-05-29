@@ -42,7 +42,7 @@ func RotateQueue[T any](q *Queue[T], n int) {
 	}
 }
 
-// Stack реализация - из-за особенностей реализации мы получаем сложность O(n)
+// Задание 4 - реализация очереди на двух стеках - из-за особенностей реализации мы получаем сложность O(n)
 // для операции извлечения когда выходной стек пуст, потому что придется все элементы перекладывать.
 // Такая операция не будет проходить слишком часто, поэтому амортизировання сложность будет ниже, но
 // "чистая реализация" выглядит лучше.
@@ -69,17 +69,16 @@ func (s *Stack[T]) Size() int {
 	return len(s.items)
 }
 
-// Задание 4 - реализация очереди на двух стеках
-type Queue[T any] struct {
+type TwostackQueue[T any] struct {
 	inStack  Stack[T]
 	outStack Stack[T]
 }
 
-func (q *Queue[T]) Enqueue(item T) {
+func (q *TwostackQueue[T]) Enqueue(item T) {
 	q.inStack.Push(item)
 }
 
-func (q *Queue[T]) Dequeue() (T, error) {
+func (q *TwostackQueue[T]) Dequeue() (T, error) {
 	// Если выходной стек пуст, перекладываем элементы из входного
 	if q.outStack.Size() == 0 {
 		for q.inStack.Size() > 0 {
@@ -91,7 +90,7 @@ func (q *Queue[T]) Dequeue() (T, error) {
 	return q.outStack.Pop()
 }
 
-func (q *Queue[T]) Size() int {
+func (q *TwostackQueue[T]) Size() int {
 	return q.inStack.Size() + q.outStack.Size()
 }
 
