@@ -8,7 +8,6 @@ import (
 	"reflect"
 )
 
-// 8. Удаление всех дубликатов из упорядоченного списка
 func (l *OrderedList[T]) RemoveDuplicates() {
 	if l.head == nil {
 		return
@@ -31,7 +30,6 @@ func (l *OrderedList[T]) RemoveDuplicates() {
 	}
 }
 
-// 9. Слияние двух упорядоченных списков
 func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 	if l._ascending != other._ascending {
 		return errors.New("списки должны иметь одинаковый порядок сортировки")
@@ -48,14 +46,11 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 		return nil
 	}
 
-	// Создаем новый список с результатом слияния
 	merged := &OrderedList[T]{}
 	merged.Clear(l._ascending)
 
 	current1 := l.head
 	current2 := other.head
-
-	// Сливаем списки, поддерживая порядок
 	for current1 != nil && current2 != nil {
 		if (l._ascending && l.Compare(current1.value, current2.value) <= 0) ||
 			(!l._ascending && l.Compare(current1.value, current2.value) >= 0) {
@@ -67,7 +62,6 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 		}
 	}
 
-	// Добавляем оставшиеся элементы
 	for current1 != nil {
 		merged.Add(current1.value)
 		current1 = current1.next
@@ -78,7 +72,6 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 		current2 = current2.next
 	}
 
-	// Заменяем текущий список результатом слияния
 	l.head = merged.head
 	l.tail = merged.tail
 	l.count = merged.count
@@ -86,7 +79,6 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 	return nil
 }
 
-// 10. Проверка наличия упорядоченного под-списка
 func (l *OrderedList[T]) Contains(sublist []T) bool {
 	if len(sublist) == 0 {
 		return true
@@ -129,7 +121,6 @@ func (l *OrderedList[T]) getDistanceToEnd(node *Node[T]) int {
 	return count
 }
 
-// 11. Поиск наиболее часто встречающегося значения
 func (l *OrderedList[T]) FindMostFrequent() (T, int, error) {
 	var zeroValue T
 	if l.head == nil {
@@ -164,11 +155,9 @@ func (l *OrderedList[T]) FindMostFrequent() (T, int, error) {
 	return maxValue, maxCount, nil
 }
 
-// 12. Поиск индекса элемента за O(log N) - требует изменения структуры
-// Для эффективного поиска по индексу добавим массив указателей на узлы
 type IndexedOrderedList[T constraints.Ordered] struct {
 	OrderedList[T]
-	nodes []*Node[T] // массив указателей на узлы для быстрого доступа по индексу
+	nodes []*Node[T]
 }
 
 func (l *IndexedOrderedList[T]) Add(item T) {
@@ -195,7 +184,6 @@ func (l *IndexedOrderedList[T]) rebuildIndex() {
 	}
 }
 
-// Бинарный поиск индекса элемента за O(log N)
 func (l *IndexedOrderedList[T]) FindIndex(item T) (int, error) {
 	if l.count == 0 {
 		return -1, errors.New("список пуст")
@@ -208,8 +196,6 @@ func (l *IndexedOrderedList[T]) FindIndex(item T) (int, error) {
 		cmp := l.Compare(l.nodes[mid].value, item)
 
 		if cmp == 0 {
-			// Найден элемент, но может быть не первое вхождение
-			// Ищем первое вхождение
 			for mid > 0 && l.Compare(l.nodes[mid-1].value, item) == 0 {
 				mid--
 			}
@@ -224,7 +210,6 @@ func (l *IndexedOrderedList[T]) FindIndex(item T) (int, error) {
 	return -1, errors.New("элемент не найден")
 }
 
-// Получение элемента по индексу за O(1)
 func (l *IndexedOrderedList[T]) GetByIndex(index int) (T, error) {
 	var zeroValue T
 	if index < 0 || index >= l.count {
@@ -233,7 +218,6 @@ func (l *IndexedOrderedList[T]) GetByIndex(index int) (T, error) {
 	return l.nodes[index].value, nil
 }
 
-// Утилитарные функции для демонстрации и отладки
 func (l *OrderedList[T]) ToSlice() []T {
 	result := make([]T, 0, l.count)
 	current := l.head
@@ -254,14 +238,12 @@ func (l *OrderedList[T]) Print() {
 	fmt.Printf("(порядок: %t, количество: %d)\n", l._ascending, l.count)
 }
 
-// Создание нового упорядоченного списка
 func NewOrderedList[T constraints.Ordered](ascending bool) *OrderedList[T] {
 	list := &OrderedList[T]{}
 	list.Clear(ascending)
 	return list
 }
 
-// Создание нового индексированного упорядоченного списка
 func NewIndexedOrderedList[T constraints.Ordered](ascending bool) *IndexedOrderedList[T] {
 	list := &IndexedOrderedList[T]{}
 	list.Clear(ascending)
