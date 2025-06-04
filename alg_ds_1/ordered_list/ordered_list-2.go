@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"reflect"
 )
 
 func (l *OrderedList[T]) RemoveDuplicates() {
@@ -23,7 +22,6 @@ func (l *OrderedList[T]) RemoveDuplicates() {
 			} else {
 				l.tail = current
 			}
-			l.count--
 		} else {
 			current = current.next
 		}
@@ -42,7 +40,6 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 	if l.head == nil {
 		l.head = other.head
 		l.tail = other.tail
-		l.count = other.count
 		return nil
 	}
 
@@ -74,7 +71,6 @@ func (l *OrderedList[T]) Merge(other *OrderedList[T]) error {
 
 	l.head = merged.head
 	l.tail = merged.tail
-	l.count = merged.count
 
 	return nil
 }
@@ -102,23 +98,13 @@ func (l *OrderedList[T]) Contains(sublist []T) bool {
 
 func (l *OrderedList[T]) checkSublistFromNode(startNode *Node[T], sublist []T) bool {
 	current := startNode
-	for i := 0; i < len(sublist) && current != nil; i++ {
-		if l.Compare(current.value, sublist[i]) != 0 {
+	for i := 0; i < len(sublist); i++ {
+		if current == nil || l.Compare(current.value, sublist[i]) != 0 {
 			return false
 		}
 		current = current.next
 	}
-	return current != nil || len(sublist) <= l.getDistanceToEnd(startNode)
-}
-
-func (l *OrderedList[T]) getDistanceToEnd(node *Node[T]) int {
-	count := 0
-	current := node
-	for current != nil {
-		count++
-		current = current.next
-	}
-	return count
+	return true
 }
 
 func (l *OrderedList[T]) FindMostFrequent() (T, int, error) {
@@ -176,7 +162,8 @@ func (l *IndexedOrderedList[T]) Clear(asc bool) {
 }
 
 func (l *IndexedOrderedList[T]) rebuildIndex() {
-	l.nodes = make([]*Node[T], 0, l.count)
+	count := l.Count()
+	l.nodes = make([]*Node[T], 0, count)
 	current := l.head
 	for current != nil {
 		l.nodes = append(l.nodes, current)
@@ -185,11 +172,12 @@ func (l *IndexedOrderedList[T]) rebuildIndex() {
 }
 
 func (l *IndexedOrderedList[T]) FindIndex(item T) (int, error) {
-	if l.count == 0 {
+	count := l.Count()
+	if count == 0 {
 		return -1, errors.New("список пуст")
 	}
 
-	left, right := 0, l.count-1
+	left, right := 0, count-1
 
 	for left <= right {
 		mid := (left + right) / 2
@@ -212,14 +200,16 @@ func (l *IndexedOrderedList[T]) FindIndex(item T) (int, error) {
 
 func (l *IndexedOrderedList[T]) GetByIndex(index int) (T, error) {
 	var zeroValue T
-	if index < 0 || index >= l.count {
+	count := l.Count()
+	if index < 0 || index >= count {
 		return zeroValue, errors.New("индекс вне диапазона")
 	}
 	return l.nodes[index].value, nil
 }
 
 func (l *OrderedList[T]) ToSlice() []T {
-	result := make([]T, 0, l.count)
+	count := l.Count()
+	result := make([]T, 0, count)
 	current := l.head
 	for current != nil {
 		result = append(result, current.value)
@@ -235,7 +225,7 @@ func (l *OrderedList[T]) Print() {
 		fmt.Printf("%v ", current.value)
 		current = current.next
 	}
-	fmt.Printf("(порядок: %t, количество: %d)\n", l._ascending, l.count)
+	fmt.Printf("(порядок: %t, количество: %d)\n", l._ascending, l.Count())
 }
 
 func NewOrderedList[T constraints.Ordered](ascending bool) *OrderedList[T] {
