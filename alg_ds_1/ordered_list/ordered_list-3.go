@@ -1,10 +1,11 @@
 package main
 
 import (
+	"constraints"
+	"os"
 	"testing"
 )
 
-// Вспомогательная функция для сравнения слайсов
 func slicesEqual[T comparable](a, b []T) bool {
 	if len(a) != len(b) {
 		return false
@@ -16,8 +17,6 @@ func slicesEqual[T comparable](a, b []T) bool {
 	}
 	return true
 }
-
-// Тесты основного функционала
 
 func TestOrderedList_Add_Ascending(t *testing.T) {
 	list := NewOrderedList[int](true)
@@ -100,13 +99,11 @@ func TestOrderedList_Find_Ascending(t *testing.T) {
 		t.Errorf("Ожидалось значение 3, получено %v", node.value)
 	}
 
-	// Поиск несуществующего элемента
 	_, err = list.Find(4)
 	if err == nil {
 		t.Error("Должна быть ошибка для несуществующего элемента")
 	}
 
-	// Поиск элемента за пределами диапазона
 	_, err = list.Find(6)
 	if err == nil {
 		t.Error("Должна быть ошибка для элемента за пределами диапазона")
@@ -119,7 +116,6 @@ func TestOrderedList_Find_Descending(t *testing.T) {
 	list.Add(3)
 	list.Add(1)
 
-	// Поиск существующего элемента
 	node, err := list.Find(3)
 	if err != nil {
 		t.Errorf("Элемент должен быть найден: %v", err)
@@ -128,7 +124,6 @@ func TestOrderedList_Find_Descending(t *testing.T) {
 		t.Errorf("Ожидалось значение 3, получено %v", node.value)
 	}
 
-	// Поиск элемента меньше минимального
 	_, err = list.Find(0)
 	if err == nil {
 		t.Error("Должна быть ошибка для элемента меньше минимального")
@@ -142,7 +137,6 @@ func TestOrderedList_Delete_Ascending(t *testing.T) {
 	list.Add(3)
 	list.Add(4)
 
-	// Удаление из середины
 	list.Delete(2)
 	expected := []int{1, 3, 4}
 	actual := list.ToSlice()
@@ -150,7 +144,6 @@ func TestOrderedList_Delete_Ascending(t *testing.T) {
 		t.Errorf("После удаления 2: ожидался %v, получен %v", expected, actual)
 	}
 
-	// Удаление первого элемента
 	list.Delete(1)
 	expected = []int{3, 4}
 	actual = list.ToSlice()
@@ -158,7 +151,6 @@ func TestOrderedList_Delete_Ascending(t *testing.T) {
 		t.Errorf("После удаления 1: ожидался %v, получен %v", expected, actual)
 	}
 
-	// Удаление последнего элемента
 	list.Delete(4)
 	expected = []int{3}
 	actual = list.ToSlice()
@@ -222,7 +214,6 @@ func TestOrderedList_Clear(t *testing.T) {
 		t.Error("После Clear head и tail должны быть nil")
 	}
 
-	// Проверяем, что новый порядок применяется
 	list.Add(1)
 	list.Add(3)
 	list.Add(2)
@@ -233,8 +224,6 @@ func TestOrderedList_Clear(t *testing.T) {
 		t.Errorf("После Clear с новым порядком ожидался %v, получен %v", expected, actual)
 	}
 }
-
-// Тесты для расширенного функционала
 
 func TestOrderedList_RemoveDuplicates(t *testing.T) {
 	list := NewOrderedList[int](true)
@@ -290,17 +279,14 @@ func TestOrderedList_Contains(t *testing.T) {
 	list.Add(4)
 	list.Add(5)
 
-	// Тест подсписка, который есть
 	if !list.Contains([]int{2, 3, 4}) {
 		t.Error("Подсписок [2, 3, 4] должен содержаться в списке")
 	}
 
-	// Тест подсписка, которого нет
 	if list.Contains([]int{2, 4, 5}) {
 		t.Error("Подсписок [2, 4, 5] не должен содержаться в списке")
 	}
 
-	// Тест пустого подсписка
 	if !list.Contains([]int{}) {
 		t.Error("Пустой подсписок должен содержаться в любом списке")
 	}
@@ -333,8 +319,6 @@ func TestIndexedOrderedList_FindIndex(t *testing.T) {
 	list.Add(3)
 	list.Add(7)
 
-	// Список должен быть: [3, 5, 7, 10, 15]
-
 	index, err := list.FindIndex(7)
 	if err != nil {
 		t.Errorf("Ошибка при поиске индекса: %v", err)
@@ -343,7 +327,6 @@ func TestIndexedOrderedList_FindIndex(t *testing.T) {
 		t.Errorf("Ожидался индекс 2 для элемента 7, получен %d", index)
 	}
 
-	// Тест несуществующего элемента
 	_, err = list.FindIndex(20)
 	if err == nil {
 		t.Error("Должна быть ошибка при поиске несуществующего элемента")
@@ -356,8 +339,6 @@ func TestIndexedOrderedList_GetByIndex(t *testing.T) {
 	list.Add(5)
 	list.Add(15)
 
-	// Список должен быть: [5, 10, 15]
-
 	value, err := list.GetByIndex(1)
 	if err != nil {
 		t.Errorf("Ошибка при получении элемента по индексу: %v", err)
@@ -366,7 +347,6 @@ func TestIndexedOrderedList_GetByIndex(t *testing.T) {
 		t.Errorf("Ожидался элемент 10 по индексу 1, получен %d", value)
 	}
 
-	// Тест выхода за границы
 	_, err = list.GetByIndex(5)
 	if err == nil {
 		t.Error("Должна быть ошибка при обращении к индексу вне диапазона")
