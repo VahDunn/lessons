@@ -61,18 +61,18 @@ func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) {
 	}
 }
 
-func (l *OrderedList[T]) Find(n T) (*Node[T], error) {
+func (l *OrderedList[T]) Find(n T) (Node[T], error) {
 	node := l.head
 	for node != nil {
 		if (l._ascending && l.Compare(node.value, n) > 0) || (!l._ascending && l.Compare(node.value, n) < 0) {
-			return nil, errors.New("node not found")
+			return Node[T]{}, errors.New("node not found")
 		}
 		if l.Compare(node.value, n) == 0 {
-			return node, nil
+			return *node, nil
 		}
 		node = node.next
 	}
-	return nil, errors.New("node not found")
+	return Node[T]{}, errors.New("node not found")
 }
 
 func (l *OrderedList[T]) Delete(n T) {
