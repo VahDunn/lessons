@@ -14,12 +14,12 @@ func TestHashTable(t *testing.T) {
 		t.Errorf("HashFun returned invalid value: %d", hash)
 	}
 
-	key1 := ht.Put("apple")
+	key1 := ht.Put("Barsik")
 	if key1 == -1 {
 		t.Error("Put failed to insert 'apple'")
 	}
 
-	foundKey := ht.Find("apple")
+	foundKey := ht.Find("Barsik")
 	if foundKey != key1 {
 		t.Errorf("Find returned wrong key: expected %d, got %d", key1, foundKey)
 	}
