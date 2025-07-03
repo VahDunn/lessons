@@ -1,0 +1,40 @@
+7.1
+
+if not not_signed - if signed
+// отчет подписан
+
+if is_debug - if debug
+// режим дебага
+
+if signature_invalid - if not signature_valid
+// валидность подписи
+
+signing_process_ended - signing_done
+// процесс подписания
+
+ready - ready_for_sign
+// готово для подписи
+
+7.2
+
+document_is_in_collection - found
+// поиск отчета в коллекции бд
+
+signed_successful - success
+// успешность подписания
+
+7.3
+
+for archive in archives (исправлено с for a in archives)
+// архив, с которым потом проводится ряд взаимодействий
+
+7.4
+получилось найти 1 случай, там first/last уже используются
+
+7.5
+
+temp - pdf_doc
+// для обозначения pdf документа во время его построения
+
+// случаев, когда можно совсем избавиться, к сожалению, не нашлось
+// однако, таковые встречались в практике ранее
