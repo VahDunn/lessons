@@ -1,0 +1,38 @@
+opts - options
+// опции фабрики моделей
+
+db - db_session
+// сессия для доступа к БД
+
+field_value - value
+// значение поля
+
+name – model_name
+// название модели
+
+type – report_type
+// тип отчета
+
+pre_string – unprocessed_text
+// текстовое значение принимаемое функцией на вход
+
+bytes_val - encoded signature
+// средний рейтинг
+
+max – max_length
+// максимальная длина
+
+min – min_length
+// минимальная длина
+
+report_time - creation_time_ms
+// время создания отчета в миллисекундах
+
+sortes_files - files_sorted_by_name
+ //  отсортированный по именам список файлов
+
+doc_date - doc_modification_date
+// дата изменения документа
+
+
+
