@@ -1,0 +1,31 @@
+VSManager - VirtualServerService
+// сервис для управления виртуальными серверами
+
+RoleService - UserRoleService
+// сервис управления ролями пользователей
+
+ProxmoxManager - ProxmoxClient
+// клиент Проксмокса
+
+FileFetcher - ReportFileFetcher
+// класс, получающий по API файлы отчетов
+
+NodeModel(BaseModel) - Node (BaseModel)
+// узел оркестратора виртуальных серверов
+
+get_reports() - get_reports_list()
+
+get_report() - get_single_report()
+
+count() - count_pages()
+
+build() - create()
+
+remove_snapshot() - delete_snapshot()
+
+execute_command() - run_command()
+
+run_vm() - start_vm()
+
+
+
