@@ -1,0 +1,35 @@
+get_client() - get_proxmox_client()
+// метод создает авторизованного клиента Proxmox
+
+gather_signing_results() - get_signing_results()
+// универсальное наименование gather - get
+
+creation_res() - create_vs()
+// создать виртуальный сервер
+
+list_vs() - get_vs_list()
+// получить список виртуальных серверов
+
+migrate() - migrate_vs()
+// мигригрировать виртуальный сервер (целевой узел передается как аргумент)
+
+fields() - get_vs_fields()
+// получить поля для виртуальных серверов
+
+random_token() - generate_token()
+// сгенерировать токен
+
+password_validation() - validate_password()
+// проверить пароль
+
+connection_pool() - get_connection_pool()
+// получить пул соединений
+
+user.password_change() - user.change_password()
+// сменить пароль пользователя
+
+headers() - prepare_headers()
+// подготовить заголовки для http запроса
+
+connection_check() - check_connection()
+// проверить соединение
