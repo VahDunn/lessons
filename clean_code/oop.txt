@@ -1,0 +1,23 @@
+1. ExtraFilter(**kwargs) - ExtraFilter.create_for_proxmox(**kwargs) /
+ ExtraFilter.create_for_mongo(**kwargs)
+// доп фильтр для репозитория (разделение ответственности для фильтрации вне ОРМ)
+type ExtraFilter struct { ... }
+
+func NewExtraFilterForProxmox(params map[string]interface{}) *ExtraFilter
+func NewExtraFilterForMongo(params map[string]interface{}) *ExtraFilter
+
+2. ProxmoxClient(**kwargs) - ProxmoxClient.create_with_token(token) / ProxmoxClient.create_with_login(login, password)
+// клиент создается в двух вариантах, ранее проверка была внутри инициализатора
+func NewProxmoxClientWithToken(token string) *ProxmoxClient
+func NewProxmoxClientWithLogin(login, password string) *ProxmoxClient
+
+3. SSHService(**kwargs) - SSHService.create_for_proxmox(**kwargs)
+   // сервис для подключения к хосту по ssh с кастомными командами
+ func NewSSHServiceForProxmox(config SSHConfig) *SSHService
+
+###
+
+VMManagerClient(ABC)
+ //абстрактный класс клиента системы управления виртуальными серверами
+ReportTemplate(ABC)
+// абстрактный класс шаблона отчета
