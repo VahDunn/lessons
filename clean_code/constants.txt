@@ -1,0 +1,49 @@
+DESCRIPTION_STR_LEN = 200
+const descriptionStringLen = 200
+// длина строки с описанием версии сайта
+
+POST = 'POST'
+const POST = "POST"
+// вместо строки в каждой ручке
+
+PROXMOX_HOST = ''
+const proxmoxHost = ""
+// хост проксмокса для устанвоки соединений в методах
+
+port = WEBAPP_PORT
+const webappPort = ""
+// порт приложения
+
+HTTP_OK = 200
+const httpOk = 200
+// константа вместо проверки на 200
+
+PROXMOX_API_PATH
+const proxmoxApiPath = ""
+// путь, с которого начинается любое обращение к апи проксмокса
+
+auth_token - PROXMOX_AUTH_TOKEN
+//токен вынесен в константу которая получает значение из переменных окружения
+
+DEFAULT_HEADER = ''
+const defaultHeader = ""
+// стандартный заголовок отчета
+
+DEFAULT_SIGNER_ROLE = ""
+const defaultSignerRole = ""
+// стандартная должность подписанта
+
+
+MAX_RETRIES
+const maxRetries =
+// Максимальное количество попыток
+
+
+DEFAULT_FONT_SIZE = 14
+cosnt defaultFontSize = 14
+// стандартный размер шрифта для всех отчетов
+
+DEFAULT_ERROR_TEXT = ''
+const defaultErrorText = ""
+// стандартный текст ошибки
+
