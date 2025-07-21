@@ -37,3 +37,33 @@ if report.last_updated > datetime.now() - timedelta(hours=24) = if report_is_fre
 
 sportsmen / specialists -> sportsmen // specialists
 // использование целочисленного деления
+
+
+sportsmenPerDoctorMonthly := 0
+if sportsmenMonthly > 0 {
+    sportsmenPerDoctorMonthly = doctorsAmount / sportsmenMonthly
+}
+
+report["type"] = 1 - reportTypes.Group
+signature["status"] = 1 - signatureStatuses.Completed
+certificate["status"] = 1 - certificateStatus.Valid
+
+errorsList := strings.Split(errors, "=")
+
+if slices.Contains(specialistReports, reportName) {
+    ...
+}
+
+if !val {
+    ...
+}
+
+const batchSizeLimit = 15
+const proxmoxRetryLimit = 25
+
+reportIsFresh := report.LastUpdated.After(time.Now().Add(-24 * time.Hour))
+if reportIsFresh {
+    ...
+}
+
+result := sportsmen / specialists
