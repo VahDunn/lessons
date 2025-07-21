@@ -1,0 +1,39 @@
+
+sportsmen_per_doctor_monthly = doctors_amount / sportsmen_monthly
+if sportsmen_monthly:
+    sportsmen_per_doctor_monthly = doctors_amount // sportsmen_monthly
+
+// рассчет нагрузки на врача, в теории может быть 0 спортсменов + целочисленное деление
+
+
+report["type"] = 1 - ReportTypes.GROUP
+// вынес типы отчетов в класс
+
+
+signature['status'] = 1 - SignatureStatuses.COMPLETED
+// вынес статусы подписания в класс
+
+
+certificate["status"] = 1 - CertificateStatus.Valid
+// вынес статус сертификата в константу
+
+errors = errors.split("=") - errors_list = errors.split("=")
+// преобразование данных проходит более явно
+
+if report_name in ["cardio", "gastro", "therapy"]  - if report_name in SPECIALIST_REPORTS
+// вынес список значений в константу
+
+if val != None - if not val:
+// использование boolean типов
+
+15 - BATСH_SIZE_LIMIT
+// лимит записей в запросе
+
+25 - PROXMOX_RETRY_LIMIT
+лимит повторных запросов в проксмокс
+
+if report.last_updated > datetime.now() - timedelta(hours=24) = if report_is_fresh
+// вынес условие в переменную
+
+sportsmen / specialists -> sportsmen // specialists
+// использование целочисленного деления
