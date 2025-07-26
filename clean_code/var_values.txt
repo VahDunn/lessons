@@ -47,10 +47,12 @@ const BASE_URL = "https://proxmox.com"
 
 message = "abc"
 requests.post(BASE_URL, message)
+// блок кода
+requests.post(BASE_URL, message)
 
 message := "abc"
-http.Post(BASE_URL, "text/plain", bytes.NewBuffer([]byte(message)))
 // блок кода
+http.Post(BASE_URL, "text/plain", bytes.NewBuffer([]byte(message)))
 
 message = "abc"
 requests.post(BASE_URL, message)
@@ -60,11 +62,13 @@ http.Post(BASE_URL, "text/plain", bytes.NewBuffer([]byte(message)))
 // объявление переменной перед использованием
 
 cert = None
+// блок кода
 cert = node.next
 
 var cert interface{} = nil
-cert = node.Next
 // блок кода
+cert = node.Next
+
 
 cert = None
 cert = node.next
@@ -93,11 +97,11 @@ self.Head.Next = bufferNode
 bufferNode = nil
 // очистка буффера после применения
 
-path = "abc"
+path: str = "abc"
 self.get(BASE_URL, path)
 path = "***ERROR***"
 
-path := "abc"
+var path string = "abc"
 self.Get(BASE_URL, path)
 path = "***ERROR***"
 // присваивание недопустимого значения после использования
@@ -118,27 +122,27 @@ for i, cert := range certificates {
 }
 // использование enumerate для счетчика
 
-proccessed_analyses = []
+proccessed_analyses_list = []
 for analysis in unproccessed_analyses:
     ...
-    proccessed_analyses.append(processed_analysis)
+    proccessed_analyses_list.append(processed_analysis)
 
-processedAnalyses := []ProcessedAnalysis{}
+processedAnalysesList := []ProcessedAnalysis{}
 for _, analysis := range unprocessedAnalyses {
     ...
-    processedAnalyses = append(processedAnalyses, processedAnalysis)
+    processedAnalysesList = append(processedAnalysesList, processedAnalysis)
 }
 // объявление переменной используемой в теле цикла перед циклом
 
-proccessed_analyses = []
+proccessed_analyses_list = []
 for field in unproccessed_analyses:
     ...
-    proccessed_analyses.append(processed_analysis)
+    proccessed_analyses_list.append(processed_analysis)
 
-processedAnalyses := []ProcessedAnalysis{}
+processedAnalysesList := []ProcessedAnalysis{}
 for _, field := range unprocessedAnalyses {
     ...
-    processedAnalyses = append(processedAnalyses, processedAnalysis)
+    processedAnalyses = append(processedAnalysesList, processedAnalysis)
 }
 // объявление переменной используемой в теле цикла перед циклом
 
