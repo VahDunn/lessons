@@ -1,0 +1,166 @@
+password = "qwerty"
+password: str = "qwerty"
+// явное объявление с тайпхинтом
+
+var password = "qwerty"
+var password string = "qwerty"
+// явное объявление с типом
+
+sportsmen_val = 75
+sportsmen_val: int = 75
+// явное объявление с тайпхинтом
+
+var sportsmenVal = 75
+var sportsmenVal int = 75
+// явное объявление с типом
+
+rbc_per_ml = 6.5
+rbc_per_ml: float = 6.5
+// явное объявление с тайпхинтом
+
+var rbcPerMl = 6.5
+var rbcPerMl float64 = 6.5
+// явное объявление с типом
+
+creation_time = time.time()
+creation_time: int = time.time()
+// явное объявление с тайпхинтом
+
+creationTime := time.Now().Unix()
+var creationTime int = time.time()
+// явное объявление с типом
+
+cards = client.get_cards()
+cards: list = client.get_cards()
+// явное объявление с тайпхинтом
+
+cards := client.GetCards()
+var cards []Card = client.GetCards()
+// явное объявление с типом
+
+url = "https://proxmox.com"
+BASE_URL = "https://proxmox.com"
+
+url := "https://proxmox.com"
+const BASE_URL = "https://proxmox.com"
+// вынес переменную в константу
+
+message = "abc"
+requests.post(BASE_URL, message)
+
+message := "abc"
+http.Post(BASE_URL, "text/plain", bytes.NewBuffer([]byte(message)))
+// блок кода
+
+message = "abc"
+requests.post(BASE_URL, message)
+
+message := "abc"
+http.Post(BASE_URL, "text/plain", bytes.NewBuffer([]byte(message)))
+// объявление переменной перед использованием
+
+cert = None
+cert = node.next
+
+var cert interface{} = nil
+cert = node.Next
+// блок кода
+
+cert = None
+cert = node.next
+
+var cert interface{} = nil
+cert = node.Next
+// объявление буффера перед использованием
+
+sportsman_per_spec = sportsmen_val // spec_amount
+day_stat.update(sportsman_per_spec=sportsman_per_spec)
+sportsman_per_spec = -1
+
+sportsmanPerSpec := sportsmenVal / specAmount
+dayStat.Update(sportsmanPerSpec)
+sportsmanPerSpec = -1
+// присваивание недопустимого значения после использования
+
+buffer_node = self.head
+self.head = newNode
+self.head.next = buffer_node
+buffer_node = None
+
+bufferNode := self.Head
+self.Head = newNode
+self.Head.Next = bufferNode
+bufferNode = nil
+// очистка буффера после применения
+
+path = "abc"
+self.get(BASE_URL, path)
+path = "***ERROR***"
+
+path := "abc"
+self.Get(BASE_URL, path)
+path = "***ERROR***"
+// присваивание недопустимого значения после использования
+
+for i in range(len('certificates')):
+    ...
+
+for i := 0; i < len(certificates); i++ {
+    ...
+}
+// использование enumerate для счетчика
+
+for i, cert in enumerate(certificates):
+    ...
+
+for i, cert := range certificates {
+    ...
+}
+// использование enumerate для счетчика
+
+proccessed_analyses = []
+for analysis in unproccessed_analyses:
+    ...
+    proccessed_analyses.append(processed_analysis)
+
+processedAnalyses := []ProcessedAnalysis{}
+for _, analysis := range unprocessedAnalyses {
+    ...
+    processedAnalyses = append(processedAnalyses, processedAnalysis)
+}
+// объявление переменной используемой в теле цикла перед циклом
+
+proccessed_analyses = []
+for field in unproccessed_analyses:
+    ...
+    proccessed_analyses.append(processed_analysis)
+
+processedAnalyses := []ProcessedAnalysis{}
+for _, field := range unprocessedAnalyses {
+    ...
+    processedAnalyses = append(processedAnalyses, processedAnalysis)
+}
+// объявление переменной используемой в теле цикла перед циклом
+
+total = 0
+while total<20:
+    total += 1
+total = 0
+
+total := 0
+for total < 20 {
+    total++
+}
+total = 0
+// обнуление аккумулятора после использования
+
+def proccess_text(text: str):
+    if not isinstance(text, str):
+        raise ValueError("Input must be a string")
+
+func processText(text interface{}) error {
+    if _, ok := text.(string); !ok {
+        return errors.New("Input must be a string")
+    }
+}
+// проверка на инвариант
