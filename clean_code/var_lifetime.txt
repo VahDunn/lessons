@@ -2,8 +2,19 @@
 self.headers -> self._headers
 // сделал атрибут приватным
 
+type MyClass struct {
+    headers map[string]string
+}
+// с маленькой буквы - приватное поле
+
 self.session -> self._session
 // сессия используется только внутри класса, сделал приватной
+
+
+type MyClient struct {
+    session *Session
+}
+// с маленькой буквы - приватное поле
 
 request_params = self.request.get_params()
 //блок кода
@@ -11,26 +22,51 @@ for item in collection_items:
 
 request_params = self.request.get_params()
 for item in collection_items:
+
+requestParams := req.GetParams()
+for _, item := range collectionItems {
+    // ...
+}
+
 // сместил объявление переменной к месту её использоваиня
 
 new_status = ...
 for node in pm_nodes:
     new_status = ...
+
+for _, node := range pmNodes {
+    newStatus := ...
+    // ...
+}
+
 // перенес объявление переменной внутрь цикла
 
 self.client = self._client
 // сделал атрибут приватным
+type ProxmoxApi struct {
+    client SomeClientType
+}
 
 self.token = self._pm_api_token
 // сделал атрибут приватным
 
+type SomeService struct {
+    pmApiToken string
+}
+
+
 base_url = "https://..." - > self.base_url = "https://"
 // сделал переменную локальной
+type Api struct {
+    baseUrl string
+}
 
 DATA_KEY = ...
 self.data_key = ...
 // сделал переменную с ключом приватной
-
+type ProxmoxAPIClient struct {
+    dataKey string
+}
 
 task = await self.proxmox.post(path, data=params_dict)
 // блок кода
@@ -38,6 +74,11 @@ await self.proxmox.wait_for_task(node, task[self._data_key])
 
 task = await self.proxmox.post(path, data=params_dict)
 await self.proxmox.wait_for_task(node, task[self._data_key])
+
+task, _ := proxmox.Post(path, paramsDict)
+// ...
+proxmox.WaitForTask(node, task[dataHolder.dataKey])
+
 // сместил переменную к месту ее использования
 
 
@@ -49,15 +90,29 @@ for msg in messages:
 sent = database['egisz.permit.sent']
 for msg in messages:
     sent.find_one(...)
+
+sent := database["egisz.permit.sent"]
+for _, msg := range messages {
+    sent.FindOne(...)
+}
+
 // сместил переменную к циклу,
 // в цикл убирать не стал, поскольку он отрабатывает синхронно,
 // и переменная используется только в нем
 
 self.database -> self._database
+
+type App struct {
+    database *Database
+}
 // сделал атрибут приватным
 
 auth_headers: ...
 self._auth_headers
+
+type Service struct {
+    authHeaders map[string]string
+}
 // убрал в класс и сделал приватным
 
 pm_data = await self.proxmox.post(...)
@@ -66,6 +121,9 @@ parsed_data = self.parse_pm_data(pm_data)
 
 pm_data = await self.proxmox.post(...)
 parsed_data = self.parse_pm_data(pm_data)
+
+pmData, _ := proxmox.Post(...)
+parsedData := parsePmData(pmData)
 // парсинг сразу после получения
 
 config = load_config()
@@ -76,7 +134,16 @@ for service in services:
 config = load_config()
 for service in services:
     initialize_service(config)
+
+config := LoadConfig()
+for _, service := range services {
+    InitializeService(config)
+}
 // инициализация сразу после получения конфига
 
 self.cached_session -> self._cached_session
+
+type CachingClient struct {
+    cachedSession *Session
+}
 // кэширование теперь приватно для класса
