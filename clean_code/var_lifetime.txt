@@ -1,0 +1,82 @@
+
+self.headers -> self._headers
+// сделал атрибут приватным
+
+self.session -> self._session
+// сессия используется только внутри класса, сделал приватной
+
+request_params = self.request.get_params()
+//блок кода
+for item in collection_items:
+
+request_params = self.request.get_params()
+for item in collection_items:
+// сместил объявление переменной к месту её использоваиня
+
+new_status = ...
+for node in pm_nodes:
+    new_status = ...
+// перенес объявление переменной внутрь цикла
+
+self.client = self._client
+// сделал атрибут приватным
+
+self.token = self._pm_api_token
+// сделал атрибут приватным
+
+base_url = "https://..." - > self.base_url = "https://"
+// сделал переменную локальной
+
+DATA_KEY = ...
+self.data_key = ...
+// сделал переменную с ключом приватной
+
+
+task = await self.proxmox.post(path, data=params_dict)
+// блок кода
+await self.proxmox.wait_for_task(node, task[self._data_key])
+
+task = await self.proxmox.post(path, data=params_dict)
+await self.proxmox.wait_for_task(node, task[self._data_key])
+// сместил переменную к месту ее использования
+
+
+sent = database['egisz.permit.sent']
+// блок кода
+for msg in messages:
+    sent.find_one(...)
+
+sent = database['egisz.permit.sent']
+for msg in messages:
+    sent.find_one(...)
+// сместил переменную к циклу,
+// в цикл убирать не стал, поскольку он отрабатывает синхронно,
+// и переменная используется только в нем
+
+self.database -> self._database
+// сделал атрибут приватным
+
+auth_headers: ...
+self._auth_headers
+// убрал в класс и сделал приватным
+
+pm_data = await self.proxmox.post(...)
+// блок кода
+parsed_data = self.parse_pm_data(pm_data)
+
+pm_data = await self.proxmox.post(...)
+parsed_data = self.parse_pm_data(pm_data)
+// парсинг сразу после получения
+
+config = load_config()
+// блок кода
+for service in services:
+    initialize_service(config)
+
+config = load_config()
+for service in services:
+    initialize_service(config)
+// инициализация сразу после получения конфига
+
+self.cached_session -> self._cached_session
+// кэширование теперь приватно для класса
