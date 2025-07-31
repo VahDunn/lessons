@@ -1,13 +1,28 @@
 "infrastructure" -> ServerTypeEnum.infrastructure
-// константы типов виртуальных серверов - используются в нескольких сервисах, поэтому хранятся в отдельном классе
+
+type ServerTypeEnum string
+
+const (
+    ServerTypeEnumInfrastructure ServerTypeEnum = "infrastructure"
+    ...
+)
+
+
+// константа типа виртуальных серверов - используются в нескольких сервисах, поэтому хранятся в отдельном классе
 // по этим типам проходит фильтрация, и они связываются при первом обращении к данному классу
 
 ticket_lifetime=60 * 60 ->
 self.ticket_lifetime = config.ticket_lifetime
 ticket_lifetime = self.ticket_lifetime
+
+ticketLifetime := 60 * 60
+s.ticketLifetime = cfg.TicketLifetime
+ticketLifetime = s.ticketLifetime
+
 // время жизни тикета - ранее было захардкожено, теперь берется из конфига, а конфиг - из переменных окружения
 // инициализируется при запуске программы и создании объекта класса конфига
 
 self.proxmox_url = config.proxmox_url
+s.proxmoxURL = cfg.ProxmoxURL
 // присваивание при инициализации класса, первично - тоже в конфиге
 // позволяет быстро перенастраивать приложение при смене URL менеджера виртуальных машин
