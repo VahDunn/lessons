@@ -1,0 +1,32 @@
+certificates.pop() -
+// заменил массив на стэк для получения последнего элемента
+
+[filter, db_id, cm_id] - (filter, db_id, cm_id)
+// замена массива на кортеж
+// это позволило еще и удобнее оперировать дефолтными значениями и тайпхинтами из-за их неизменяемости
+type FilterTuple struct {
+    filter string
+    dbID   int
+    cmID   int
+}
+ft := FilterTuple{filter: "f", dbID: 1, cmID: 2}
+
+footer_header[6] - footer_header[-1]
+// обращение к последнему элементу заменено на более безопасное
+footerHeader := []string{/*...*/}
+var lastFooter string
+if len(footerHeader) > 0 {
+    lastFooter = footerHeader[len(footerHeader)-1]
+}
+
+proxmox_filter_keys = ['status', 'node'] - exceptions = {'status', 'node'}
+// замена массива на множество
+exceptions := map[string]struct{}{
+    "status": {},
+    "node":   {},
+}
+
+arr.insert(0, itm) - queue.enque(itm)
+// замена массива на очередь
+q := Queue[int]{}
+q.Enqueue(1)
