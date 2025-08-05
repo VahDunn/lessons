@@ -1,0 +1,38 @@
+# сообщения с msg_id=None попадают в /root
+if msg_id == None:
+    new_msg.collection_id = "root"
+
+
+# Проверка на наличие всех необходимых данных о сервере
+is_complete_vs_json = check_vs_json_completion(vs_json)
+
+
+if not all_collections:
+    # сохранить все сообщения об отчетах в дефолтной коллекции
+    default_collection_path = os.path.join(destination_directory, "default")
+
+
+# Создание экземпляра класса по классу и тегу с использованием директорий проекта
+def _create_instance_object(self, obj_cls: type[Any]) -> Any:
+    if obj := self._get_object_from_context_cache(obj_cls.__name__):
+    // дальше блок кода
+
+
+# Отправляет уведомления во все системы оповещений
+def push_notification_if_migration_complete(vs_id):
+
+
+# Обновляет данные о виртуальном сервере в бд при их обновлении в Proxmox
+add_action('db_update_on_pm_change')
+
+
+# незарегистрированные сервера выдаются по-умолчанию, если фильтр не установлен как false
+def __init__(self, **kwargs):
+    filter_kwargs: dict[str, Any] = {
+        k: v for k, v in kwargs.items() if k in self.filter_keys
+    }
+    filter_kwargs.setdefault('unregistered', self._default_unregistered)
+    self._filters = self._extract_filter_kwargs(
+        self.filter_keys,
+        filter_kwargs,
+    )
