@@ -1,0 +1,66 @@
+# здесь должен быть код, отвечающий за лабораторные отчеты, пока его нет
+// комментарий не имеет смысла, лучше передлать на TODO
+
+# create collection
+collection_id = create_collection(collection_data, report_type)
+// шумный комментарий
+
+except KeyError as ke:
+    # Probably this is not a native query, skip this
+// неочевидный комментарий
+
+database_mappings = mapping_conf.get('databases')  # must be a list of dict
+// вместо комментария нужно использовать type hint
+
+# delete cards
+for card in client.cards.get():
+    client.cards.delete(card_id=card['id'])
+// избыточный комментарий
+
+##################################################################
+######################### REST Handler ###########################
+##################################################################
+//позиционный маркер
+
+ if res.ok:  # 200
+ // избыточный комментарий
+
+ elif res.status_code == 401:  # unauthorized
+ // избыточный комментарий
+
+ # Fix for the issue 10
+ // неочевидный комментарий
+
+# Add the card name if it is provided
+if card_name is not None:
+    custom_json['name'] = card_name
+// шумный комментарий
+
+# Add visualization_settings if it is not present in the custom_json
+if 'visualization_settings' not in custom_json:
+    custom_json['visualization_settings'] = {}
+// шумный комментарий
+
+# Add the card name if it is provided
+if card_name is not None:
+    custom_json['name'] = card_name
+// шумный комментарий
+
+
+# Set the collection
+if collection_id:
+    custom_json['collection_id'] = collection_id
+// шумный комментарий
+
+##################################################################
+###################### Custom Handlers ##########################
+##################################################################
+// позиционный маркер
+
+# checking whether friendly_name is disabled required admin access.
+# So to let non-admin users also use this package we skip this step for them.
+# There is warning in the __init__ method for these users.
+if not self.is_admin:
+    return True
+
+// слишком много информации
