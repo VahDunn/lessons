@@ -12,9 +12,9 @@ except KeyError as ke:
 database_mappings = mapping_conf.get('databases')  # must be a list of dict
 // вместо комментария нужно использовать type hint
 
-# delete cards
-for card in client.cards.get():
-    client.cards.delete(card_id=card['id'])
+# delete certs
+for xerts in client.certs.get():
+    client.certs.delete(certs_id=certs['id'])
 // избыточный комментарий
 
 ##################################################################
