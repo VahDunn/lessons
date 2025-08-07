@@ -1,66 +1,43 @@
-# здесь должен быть код, отвечающий за лабораторные отчеты, пока его нет
-// комментарий не имеет смысла, лучше передлать на TODO
+# получить данные из BQ о состоянии таблиц
+get_bq_data
+->
+get_bq_tables_staet
+// убран комментарий, переименованна функция
 
-# create collection
-collection_id = create_collection(collection_data, report_type)
-// шумный комментарий
+# Check whether the provided json has the required info or not
+is_complete_json = True
+// объяснение значения переменной
 
-except KeyError as ke:
-    # Probably this is not a native query, skip this
-// неочевидный комментарий
+# set params name in variables (will be shown in Cloud Web UI)
+# so we could access them by these keys later
+dt_start_param = 'start_date'
+dt_end_param = 'end_date'
+// объяснение назначения перменных
 
-database_mappings = mapping_conf.get('databases')  # must be a list of dict
-// вместо комментария нужно использовать type hint
+# 's3://analytics/raw/file' → '/raw/file'
+sub_paths = [key.split(bucket_name)[-1] for key in full_paths]
+// резльтутат выражения
 
-# delete certs
-for xerts in client.certs.get():
-    client.certs.delete(certs_id=certs['id'])
-// избыточный комментарий
+# initiate s3 client
+s3 = boto3.resource('s3')
+// прокомментированно в связи с невыразительностью метода в библиотеке
 
-##################################################################
-######################### REST Handler ###########################
-##################################################################
-//позиционный маркер
+# delete files
+for filepath in sub_paths:
+    _ = s3.Object(bucket_name, filepath.lstrip('/')).delete()
+// комментарий добавляет выразительности
 
- if res.ok:  # 200
- // избыточный комментарий
+# a datetime object representing the scheduled start time for the flow run;
+# falls back to now for unscheduled runs
+scheduled_start_time = prefect.context.get('scheduled_start_time')
+// прокомментированно значение переменной из окружения
 
- elif res.status_code == 401:  # unauthorized
- // избыточный комментарий
+# TODO : add parameters usage
 
- # Fix for the issue 10
- // неочевидный комментарий
+# TODO: Deprecate
 
-# Add the card name if it is provided
-if card_name is not None:
-    custom_json['name'] = card_name
-// шумный комментарий
+# TODO: Initiate dataloaders separately from training.
 
-# Add visualization_settings if it is not present in the custom_json
-if 'visualization_settings' not in custom_json:
-    custom_json['visualization_settings'] = {}
-// шумный комментарий
+# TODO: normalize reports result
 
-# Add the card name if it is provided
-if card_name is not None:
-    custom_json['name'] = card_name
-// шумный комментарий
-
-
-# Set the collection
-if collection_id:
-    custom_json['collection_id'] = collection_id
-// шумный комментарий
-
-##################################################################
-###################### Custom Handlers ##########################
-##################################################################
-// позиционный маркер
-
-# checking whether friendly_name is disabled required admin access.
-# So to let non-admin users also use this package we skip this step for them.
-# There is warning in the __init__ method for these users.
-if not self.is_admin:
-    return True
-
-// слишком много информации
+# TODO: rewrite to async
