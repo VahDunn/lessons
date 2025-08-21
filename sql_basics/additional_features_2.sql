@@ -16,7 +16,7 @@ FROM Orders o
 WHERE o.CustomerID IN (
     SELECT c.CustomerID
     FROM Customers c
-    WHERE c.Region IS NOT NULL AND LTRIM(RTRIM(c.Region)) <> ''
+    WHERE c.Region IS NOT NULL
 );
 
 9.4.3
