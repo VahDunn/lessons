@@ -1,4 +1,4 @@
-package main
+package lessons
 
 func toPower(n int, m int) int {
 	if m == 0 {
