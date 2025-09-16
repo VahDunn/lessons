@@ -1,8 +1,8 @@
 package lessons
 
 import (
+	"regexp"
 	"strings"
-	"unicode"
 )
 
 func toPower(n int, m int) int {
@@ -32,22 +32,21 @@ func listLength(ll []int) int {
 	return listLength(ll[1:]) + 1
 }
 
-func isPalindromeRec(s string) bool {
-	var filtered []rune
-	for _, r := range strings.ToLower(s) {
-		if unicode.IsLetter(r) || unicode.IsDigit(r) {
-			filtered = append(filtered, r)
-		}
-	}
-	return check(filtered)
+var filteringRE = regexp.MustCompile(`[^\p{L}\p{N}]+`)
+
+func IsPalindrome(text string) bool {
+	filtered := filteringRE.ReplaceAllString(text, "")
+	filtered = strings.ToLower(filtered)
+	runes := []rune(filtered)
+	return checkPalindrome(runes, 0, len(runes)-1)
 }
 
-func check(rs []rune) bool {
-	if len(rs) <= 1 {
+func checkPalindrome(runes []rune, left, right int) bool {
+	if left >= right {
 		return true
 	}
-	if rs[0] != rs[len(rs)-1] {
+	if runes[left] != runes[right] {
 		return false
 	}
-	return check(rs[1 : len(rs)-1])
+	return checkPalindrome(runes, left+1, right-1)
 }
