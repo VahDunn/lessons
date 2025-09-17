@@ -1,6 +1,7 @@
 package lessons
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -49,4 +50,18 @@ func checkPalindrome(runes []rune, left, right int) bool {
 		return false
 	}
 	return checkPalindrome(runes, left+1, right-1)
+}
+
+func printEvenRec(numList []int, i int) {
+	if i >= len(numList) {
+		return
+	}
+	if numList[i]%2 == 0 {
+		fmt.Println(numList[i])
+	}
+	printEvenRec(numList, i+1)
+}
+
+func printEven(numList []int) {
+	printEvenRec(numList, 0)
 }
