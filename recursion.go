@@ -35,10 +35,12 @@ func listLength(ll []int) int {
 
 var filteringRE = regexp.MustCompile(`[^\p{L}\p{N}]+`)
 
-func IsPalindrome(text string) bool {
-	filtered := filteringRE.ReplaceAllString(text, "")
-	filtered = strings.ToLower(filtered)
-	runes := []rune(filtered)
+func IsPalindrome(text string, needFilter bool) bool {
+	if needFilter {
+		text = filteringRE.ReplaceAllString(text, "")
+		text = strings.ToLower(text)
+	}
+	runes := []rune(text)
 	return checkPalindrome(runes, 0, len(runes)-1)
 }
 
