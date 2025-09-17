@@ -35,8 +35,8 @@ func listLength(ll []int) int {
 
 var filteringRE = regexp.MustCompile(`[^\p{L}\p{N}]+`)
 
-func IsPalindrome(text string, needFilter bool) bool {
-	if needFilter {
+func IsPalindrome(text string, useFilter bool) bool {
+	if useFilter {
 		text = filteringRE.ReplaceAllString(text, "")
 		text = strings.ToLower(text)
 	}
