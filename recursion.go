@@ -112,18 +112,15 @@ func secondMaxRec(nums []int, i, max1, max2 int) int {
 
 func FindAllFiles(root string) ([]string, error) {
 	var out []string
-	if err := findAllFilesRec(root, &out); err != nil {
+
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		return nil, err
+	}
+	if err := processEntries(root, entries, 0, &out); err != nil {
 		return nil, err
 	}
 	return out, nil
-}
-
-func findAllFilesRec(dir string, out *[]string) error {
-	entries, err := os.ReadDir(dir)
-	if err != nil {
-		return err
-	}
-	return processEntries(dir, entries, 0, out)
 }
 
 func processEntries(dir string, entries []os.DirEntry, i int, out *[]string) error {
@@ -132,8 +129,13 @@ func processEntries(dir string, entries []os.DirEntry, i int, out *[]string) err
 	}
 	e := entries[i]
 	path := filepath.Join(dir, e.Name())
+
 	if e.IsDir() {
-		if err := findAllFilesRec(path, out); err != nil {
+		subEntries, err := os.ReadDir(path)
+		if err != nil {
+			return err
+		}
+		if err := processEntries(path, subEntries, 0, out); err != nil {
 			return err
 		}
 	} else {
