@@ -2,6 +2,8 @@ package lessons
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -66,4 +68,76 @@ func printEvenRec(numList []int, i int) {
 
 func printEven(numList []int) {
 	printEvenRec(numList, 0)
+}
+
+func printEvenIndexRec(numList []int, i int) {
+	if i >= len(numList) {
+		return
+	}
+	fmt.Println(numList[i])
+	printEvenIndexRec(numList, i+2)
+}
+
+func printEvenIndex(numList []int) {
+	printEvenIndexRec(numList, 0)
+}
+
+func secondMax(nums []int) (int, bool) {
+	if len(nums) < 2 {
+		return 0, false
+	}
+	a, b := nums[0], nums[1]
+	var max1, max2 int
+	if a >= b {
+		max1, max2 = a, b
+	} else {
+		max1, max2 = b, a
+	}
+	return secondMaxRec(nums, 2, max1, max2), true
+}
+
+func secondMaxRec(nums []int, i, max1, max2 int) int {
+	if i == len(nums) {
+		return max2
+	}
+	x := nums[i]
+	if x > max1 {
+		return secondMaxRec(nums, i+1, x, max1)
+	}
+	if x > max2 {
+		return secondMaxRec(nums, i+1, max1, x)
+	}
+	return secondMaxRec(nums, i+1, max1, max2)
+}
+
+func FindAllFiles(root string) ([]string, error) {
+	var out []string
+	if err := findAllFilesRec(root, &out); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func findAllFilesRec(dir string, out *[]string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+	return processEntries(dir, entries, 0, out)
+}
+
+func processEntries(dir string, entries []os.DirEntry, i int, out *[]string) error {
+	if i >= len(entries) {
+		return nil
+	}
+	e := entries[i]
+	path := filepath.Join(dir, e.Name())
+	if e.IsDir() {
+		if err := findAllFilesRec(path, out); err != nil {
+			return err
+		}
+	} else {
+		*out = append(*out, path)
+	}
+	return processEntries(dir, entries, i+1, out)
 }
