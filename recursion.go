@@ -102,44 +102,31 @@ func secondMaxRec(nums []int, i, max1, max2 int) int {
 	}
 	x := nums[i]
 	if x > max1 {
-		return secondMaxRec(nums, i+1, x, max1)
-	}
-	if x > max2 {
-		return secondMaxRec(nums, i+1, max1, x)
+		max2, max1 = max1, x
+	} else if x > max2 {
+		max2 = x
 	}
 	return secondMaxRec(nums, i+1, max1, max2)
 }
 
-func FindAllFiles(root string) ([]string, error) {
-	var out []string
-
-	entries, err := os.ReadDir(root)
+func FindAllFiles(dir string) ([]string, error) {
+	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
-	if err := processEntries(root, entries, 0, &out); err != nil {
-		return nil, err
+
+	out := make([]string, 0, len(entries))
+	for _, e := range entries {
+		path := filepath.Join(dir, e.Name())
+		if e.IsDir() {
+			sub, err := FindAllFiles(path)
+			if err != nil {
+				return nil, err
+			}
+			out = append(out, sub...)
+		} else {
+			out = append(out, path)
+		}
 	}
 	return out, nil
-}
-
-func processEntries(dir string, entries []os.DirEntry, i int, out *[]string) error {
-	if i >= len(entries) {
-		return nil
-	}
-	e := entries[i]
-	path := filepath.Join(dir, e.Name())
-
-	if e.IsDir() {
-		subEntries, err := os.ReadDir(path)
-		if err != nil {
-			return err
-		}
-		if err := processEntries(path, subEntries, 0, out); err != nil {
-			return err
-		}
-	} else {
-		*out = append(*out, path)
-	}
-	return processEntries(dir, entries, i+1, out)
 }
