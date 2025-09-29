@@ -2,12 +2,12 @@ import pytest
 
 @pytest.fixture
 def bst_empty():
-    from .binary_tree_2 import BST  # либо замени на свой модуль
+    from .binary_search_tree import BST  # либо замени на свой модуль
     return BST(None)
 
 @pytest.fixture
 def bst_balanced():
-    from .binary_tree_2 import BST
+    from .binary_search_tree import BST
     bst = BST(None)
     for k in [8, 4, 12, 2, 6, 10, 14]:
         bst.AddKeyValue(k, str(k))
@@ -15,7 +15,7 @@ def bst_balanced():
 
 @pytest.fixture
 def bst_unbalanced_right():
-    from .binary_tree_2 import BST
+    from .binary_search_tree import BST
     bst = BST(None)
     for k in [1, 2, 3, 4, 5]:
         bst.AddKeyValue(k, str(k))
@@ -23,7 +23,7 @@ def bst_unbalanced_right():
 
 @pytest.fixture
 def bst_unbalanced_left():
-    from .binary_tree_2 import BST
+    from .binary_search_tree import BST
     bst = BST(None)
     for k in [5, 4, 3, 2, 1]:
         bst.AddKeyValue(k, str(k))
@@ -70,7 +70,7 @@ def test_unbalanced_left_traversals(bst_unbalanced_left):
 
 def test_returns_nodes_not_keys(bst_balanced):
     res = bst_balanced.WideAllNodes()
-    from .binary_tree_2 import BSTNode
+    from .binary_search_tree import BSTNode
     assert all(isinstance(n, BSTNode) for n in res)
 
 
