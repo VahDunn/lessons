@@ -8,27 +8,30 @@ class Heap:
     def _parent(self, i): return (i - 1) // 2
 
     def _sift_up(self, i):
-        if i == 0:
-            return
-        p = self._parent(i)
-        if self.a[p] < self.a[i]:
-            self.a[p], self.a[i] = self.a[i], self.a[p]
-            self._sift_up(p)
+        while i > 0:
+            p = self._parent(i)
+            if self.a[p] < self.a[i]:
+                self.a[p], self.a[i] = self.a[i], self.a[p]
+                i = p
+            else:
+                break
 
     def _sift_down(self, i):
-        l, r = self._left(i), self._right(i)
-        largest = i
-        if l < self.size and self.a[l] > self.a[largest]:
-            largest = l
-        if r < self.size and self.a[r] > self.a[largest]:
-            largest = r
-        if largest != i:
+        while True:
+            l, r = self._left(i), self._right(i)
+            largest = i
+            if l < self.size and self.a[l] > self.a[largest]:
+                largest = l
+            if r < self.size and self.a[r] > self.a[largest]:
+                largest = r
+            if largest == i:
+                break
             self.a[i], self.a[largest] = self.a[largest], self.a[i]
-            self._sift_down(largest)
+            i = largest
 
     def MakeHeap(self, arr, depth):
         cap = 2 ** (depth + 1) - 1
-        self.a = [None] * cap
+        self.a = [-1] * cap                      # вместо None
         self.size = min(len(arr), cap)
         self.a[:self.size] = arr[:self.size]
         for i in range(self.size // 2 - 1, -1, -1):
@@ -48,8 +51,9 @@ class Heap:
             return -1
         top = self.a[0]
         self.size -= 1
-        self.a[0] = self.a[self.size]
-        self.a[self.size] = None
-        if self.size > 0:
-            self._sift_down(0)
+        if self.size >= 0:
+            self.a[0] = self.a[self.size] if self.size > 0 else -1
+            self.a[self.size] = -1
+            if self.size > 0:
+                self._sift_down(0)
         return top
