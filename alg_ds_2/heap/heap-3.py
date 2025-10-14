@@ -89,9 +89,9 @@ def test_heap_property_invariant(depth):
         for i in range(heap.size):
             l, r = 2*i + 1, 2*i + 2
             if l < heap.size:
-                assert heap.a[i] >= heap.a[l]
+                assert heap.HeapArray[i] >= heap.HeapArray[l]
             if r < heap.size:
-                assert heap.a[i] >= heap.a[r]
+                assert heap.HeapArray[i] >= heap.HeapArray[r]
 
     check_invariant(h)
 

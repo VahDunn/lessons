@@ -9,7 +9,7 @@ class Heap2(Heap):
             nonlocal best
             if i >= self.size:
                 return
-            val = self.a[i]
+            val = self.HeapArray[i]
             if val is None:
                 return
             if val < low:
@@ -34,7 +34,7 @@ class Heap2(Heap):
         def dfs(i: int):
             if i >= self.size:
                 return None
-            v = self.a[i]
+            v = self.HeapArray[i]
             if v < x:
                 return v
             left = dfs(self._left(i))
@@ -47,7 +47,7 @@ class Heap2(Heap):
 # для поиска точного значения куча не так удобна, как БСТ, но здесь это и не требуется
 
     def PeekMax(self):
-        return -1 if self.size == 0 else self.a[0]
+        return -1 if self.size == 0 else self.HeapArray[0]
 
     def MergeFrom(self, other: "Heap"):
         total = self.size + other.size
@@ -74,7 +74,7 @@ class Heap2(Heap):
         while other.size > 0:
             merged.Add(other.GetMax())
 
-        self.a = merged.a
+        self.HeapArray = merged.HeapArray
         self.size = merged.size
 
         # краевые случаи + сначала по двум "родительским кучам" итерируемся, а потом по остаткам былой роскоши
