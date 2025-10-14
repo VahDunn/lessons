@@ -1,7 +1,7 @@
 import math
 from heap import Heap
 
-class Heap_2(Heap):
+class Heap2(Heap):
 
     def MaxInRange(self, low, high):
         best = None
