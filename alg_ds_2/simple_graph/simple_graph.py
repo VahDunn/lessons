@@ -3,7 +3,6 @@ class Vertex:
     def __init__(self, val):
         self.Value = val
 
-# Граф уже направленный
 class SimpleGraph:
 
     def __init__(self, size):
@@ -11,7 +10,6 @@ class SimpleGraph:
         self.m_adjacency = [[0] * size for _ in range(size)]
         self.vertex = [None] * size
 
-    # Здесь v - значение вершины/узла
     def AddVertex(self, v):
         for i in range(self.max_vertex):
             if self.vertex[i] is None:
@@ -19,7 +17,6 @@ class SimpleGraph:
                 return
         raise Exception(f"Graph of size {self.max_vertex} is full")
 
-    # А здесь и далее - индекс вершины в списке vertex
     def RemoveVertex(self, v):
         self._check_index(v)
         self.vertex[v] = None
@@ -30,29 +27,20 @@ class SimpleGraph:
     def IsEdge(self, v1, v2):
         self._check_index(v1)
         self._check_index(v2)
-        if v1 == v2:
-            return False
         return self.m_adjacency[v1][v2] != 0
 
     def AddEdge(self, v1, v2):
-        # проверяем, что обе вершины существуют
         self._check_exists(v1)
         self._check_exists(v2)
-        if v1 == v2:
-            return
-        if self.m_adjacency[v1][v2] == 0:
-            self.m_adjacency[v1][v2] = 1
-            self.m_adjacency[v2][v1] = 1
+        self.m_adjacency[v1][v2] = 1
+        self.m_adjacency[v2][v1] = 1
 
 
     def RemoveEdge(self, v1, v2):
         self._check_index(v1)
         self._check_index(v2)
-        if v1 == v2:
-            return
-        if self.m_adjacency[v1][v2] != 0:
-            self.m_adjacency[v1][v2] = 0
-            self.m_adjacency[v2][v1] = 0
+        self.m_adjacency[v1][v2] = 0
+        self.m_adjacency[v2][v1] = 0
 
     def _check_exists(self, v):
         self._check_index(v)
