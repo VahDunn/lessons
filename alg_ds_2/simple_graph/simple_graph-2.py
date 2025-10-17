@@ -2,6 +2,24 @@ from simple_graph import SimpleGraph
 
 class SimpleGraph2(SimpleGraph):
 
+    def AddEdge(self, v1, v2):
+        # проверяем, что обе вершины существуют
+        self._check_exists(v1)
+        self._check_exists(v2)
+        if v1 == v2:
+            return
+        if self.m_adjacency[v1][v2] == 0:
+            self.m_adjacency[v1][v2] = 1
+
+
+    def RemoveEdge(self, v1, v2):
+        self._check_index(v1)
+        self._check_index(v2)
+        if v1 == v2:
+            return
+        if self.m_adjacency[v1][v2] != 0:
+            self.m_adjacency[v1][v2] = 0
+
     def is_cyclic(self) -> bool:
         WHITE, GRAY, BLACK = 0, 1, 2
         color = [WHITE] * self.max_vertex

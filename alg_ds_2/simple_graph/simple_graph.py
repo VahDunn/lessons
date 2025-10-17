@@ -3,7 +3,7 @@ class Vertex:
     def __init__(self, val):
         self.Value = val
 
-
+# Граф уже направленный
 class SimpleGraph:
 
     def __init__(self, size):
@@ -42,6 +42,7 @@ class SimpleGraph:
             return
         if self.m_adjacency[v1][v2] == 0:
             self.m_adjacency[v1][v2] = 1
+            self.m_adjacency[v2][v1] = 1
 
 
     def RemoveEdge(self, v1, v2):
