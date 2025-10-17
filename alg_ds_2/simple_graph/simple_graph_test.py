@@ -80,9 +80,9 @@ def test_index_bounds():
     with pytest.raises(Exception):
         g.RemoveVertex(2)
 
-def test_no_self_loops_on_add():
+def test_self_loop_on_add():
     g = SimpleGraph(2)
     fill_vertices(g, 2)
-    g.AddEdge(1, 1)            # игнорируется
-    assert g.IsEdge(1, 1) is False
-    assert g.m_adjacency[1][1] == 0
+    g.AddEdge(1, 1)
+    assert g.IsEdge(1, 1) is True
+    assert g.m_adjacency[1][1] == 1
