@@ -27,8 +27,7 @@ def empty_tree():
 
 @pytest.fixture
 def even_tree_example():
-    # Классический пример из задачи «Even Tree»
-    # Рёбра по значениям:
+    # Классический пример задачи Even Tree (10 узлов)
     # 1-2, 1-3, 1-6, 2-5, 2-7, 3-4, 4-8, 4-9, 6-10
     n1 = SimpleTreeNode(1, None)
     t = SimpleTree(n1)
@@ -54,6 +53,28 @@ def even_tree_example():
     t.AddChild(n6, n10)
 
     return t, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10
+
+
+@pytest.fixture
+def even_tree_for_balance():
+    # 6 узлов с произвольной исходной структурой и неотсортированными значениями
+    # После BalanceEvenBinary ожидаем почти полное двоичное по возрастанию значений
+    r = SimpleTreeNode(6, None)
+    t = SimpleTree(r)
+
+    a = SimpleTreeNode(1, r)
+    b = SimpleTreeNode(4, r)
+    c = SimpleTreeNode(2, b)
+    d = SimpleTreeNode(5, b)
+    e = SimpleTreeNode(3, c)
+
+    t.AddChild(r, a)
+    t.AddChild(r, b)
+    t.AddChild(b, c)
+    t.AddChild(b, d)
+    t.AddChild(c, e)
+
+    return t
 
 
 def pairs_to_values(pairs):
@@ -161,6 +182,7 @@ def test_move_node_prevent_cycle(sample_tree):
     assert set(root.Children) == before_children_root
     assert set(n4.Children) == before_children_n4
 
+
 def test_move_node_allowed_between_branches(sample_tree):
     tree, root, n2, n3, n4, n5 = sample_tree
     assert n3.Parent is root
@@ -195,3 +217,53 @@ def test_even_trees_classic_example(even_tree_example):
     assert n1.NodeLevel == 0
     assert {n2.NodeLevel, n3.NodeLevel, n6.NodeLevel} == {1}
     assert n4.NodeLevel == 2
+
+
+def test_even_subtree_count_whole_tree(even_tree_example):
+    t, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10 = even_tree_example
+    assert t.EvenSubtreeCount(n1) == 3  # узлы 3, 6, 1
+
+
+def test_even_subtree_count_various_roots(even_tree_example):
+    t, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10 = even_tree_example
+    assert t.EvenSubtreeCount(n3) == 1  # поддерево размера 4
+    assert t.EvenSubtreeCount(n6) == 1  # поддерево размера 2
+    assert t.EvenSubtreeCount(n4) == 0  # размер 3
+    assert t.EvenSubtreeCount(n2) == 0  # размер 3
+    assert t.EvenSubtreeCount(n5) == 0  # лист
+
+
+def test_balance_even_binary_rejects_empty_or_odd(sample_tree, empty_tree):
+    tree, *_ = sample_tree
+    assert tree.Count() % 2 == 1
+    assert tree.BalanceEvenBinary() is False
+    assert empty_tree.BalanceEvenBinary() is False
+
+
+def test_balance_even_binary_builds_complete_binary(even_tree_for_balance):
+    t = even_tree_for_balance
+    assert t.Count() == 6
+    ok = t.BalanceEvenBinary()
+    assert ok is True
+    nodes = t.GetAllNodes()
+    vals = sorted(int(n.NodeValue) for n in nodes)
+    assert vals == [1, 2, 3, 4, 5, 6]
+    arr = sorted(nodes, key=lambda n: int(n.NodeValue))
+    root = t.Root
+    assert root is arr[0]
+    for i, n in enumerate(arr):
+        assert len(n.Children) <= 2
+        li = 2 * i + 1
+        ri = 2 * i + 2
+        expected_children = []
+        if li < len(arr):
+            expected_children.append(arr[li])
+            assert arr[li].Parent is n
+        if ri < len(arr):
+            expected_children.append(arr[ri])
+            assert arr[ri].Parent is n
+        assert n.Children == expected_children
+    t.enum_nodes_levels()
+    assert t.Root.NodeLevel == 0
+    for ch in t.Root.Children:
+        assert ch.NodeLevel == 1
