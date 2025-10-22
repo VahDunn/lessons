@@ -2,6 +2,7 @@ class Vertex:
 
     def __init__(self, val):
         self.Value = val
+        self.hit = False
 
 class SimpleGraph:
 
@@ -50,3 +51,37 @@ class SimpleGraph:
     def _check_index(self, v):
         if not (0 <= v < self.max_vertex):
             raise Exception(f"Vertex {v} is out of range")
+
+    def DepthFirstSearch(self, VFrom, VTo):
+        self._check_exists(VFrom)
+        self._check_exists(VTo)
+
+        for v in self.vertex:
+            if v is not None:
+                v.hit = False
+
+        if VFrom == VTo:
+            self.vertex[VFrom].hit = True
+            return [self.vertex[VFrom]]
+
+        stack = []
+        self.vertex[VFrom].hit = True
+        stack.append(VFrom)
+
+        while stack:
+            current = stack[-1]
+
+            moved = False
+            for nxt in range(self.max_vertex):
+                if self.m_adjacency[current][nxt] == 1 and self.vertex[nxt] is not None and not self.vertex[nxt].hit:
+                    self.vertex[nxt].hit = True
+                    stack.append(nxt)
+                    if nxt == VTo:
+                        return [self.vertex[i] for i in stack]
+                    moved = True
+                    break
+
+            if not moved:
+                stack.pop()
+
+        return []

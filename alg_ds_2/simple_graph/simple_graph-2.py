@@ -41,3 +41,45 @@ class SimpleGraph2(SimpleGraph):
             if color[u] == WHITE and dfs(u):
                 return True
         return False
+
+    def is_connected(self) -> bool:
+        active = [i for i, v in enumerate(self.vertex) if v is not None]
+        if len(active) <= 1:
+            return True
+
+        start = active[0]
+        seen = set([start])
+        stack = [start]
+
+        while stack:
+            u = stack.pop()
+            for v in active:
+                if u == v:
+                    continue
+                # считаем ребро, если есть дуга в любую сторону
+                if (self.m_adjacency[u][v] == 1 or self.m_adjacency[v][u] == 1) and v not in seen:
+                    seen.add(v)
+                    stack.append(v)
+
+        return len(seen) == len(active)
+
+    def longest_simple_path_length(self) -> int:
+        active = [i for i, v in enumerate(self.vertex) if v is not None]
+        if not active:
+            return 0
+
+        def dfs(u: int, visited: set) -> int:
+            # длина наилучшего пути, начинающегося в u (включая u)
+            best = 1
+            for v in active:
+                if self.m_adjacency[u][v] == 1 and v not in visited:
+                    visited.add(v)
+                    best = max(best, 1 + dfs(v, visited))
+                    visited.remove(v)
+            return best
+
+        answer = 1
+        for s in active:
+            answer = max(answer, dfs(s, {s}))
+        return answer
+

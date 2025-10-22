@@ -86,3 +86,93 @@ def test_self_loop_on_add():
     g.AddEdge(1, 1)
     assert g.IsEdge(1, 1) is True
     assert g.m_adjacency[1][1] == 1
+
+def fill_vertices(g, n):
+    for i in range(n):
+        g.AddVertex(f"v{i}")
+
+def indices_of(g, verts):
+    """Преобразует список Vertex -> список индексов этих вершин в g.vertex."""
+    index_map = {v: i for i, v in enumerate(g.vertex)}
+    return [index_map[v] for v in verts]
+
+def is_valid_path(g, path, v_from, v_to):
+    """Проверяет корректность пути: начало/конец и смежность соседних вершин."""
+    if v_from is None or v_to is None:
+        return False
+    if not path:
+        return False
+    idx_path = indices_of(g, path)
+    if idx_path[0] != v_from or idx_path[-1] != v_to:
+        return False
+    # каждое соседнее ребро должно существовать (для неориентированного графа обе стороны True)
+    for a, b in zip(idx_path, idx_path[1:]):
+        if not g.IsEdge(a, b):
+            return False
+    return True
+
+def test_dfs_same_vertex_returns_singleton():
+    g = SimpleGraph(1)
+    g.AddVertex("A")
+    path = g.DepthFirstSearch(0, 0)
+    assert len(path) == 1
+    assert path[0] is g.vertex[0]
+
+def test_dfs_linear_path_found():
+    # 0 - 1 - 2 - 3
+    g = SimpleGraph(4)
+    fill_vertices(g, 4)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 3)
+
+    path = g.DepthFirstSearch(0, 3)
+    assert is_valid_path(g, path, 0, 3)
+    # для линейной цепочки путь единственный
+    assert [g.vertex[i] for i in [0, 1, 2, 3]] == path
+
+def test_dfs_no_path_returns_empty():
+    # компоненты: (0-1) и (2) отдельно
+    g = SimpleGraph(3)
+    fill_vertices(g, 3)
+    g.AddEdge(0, 1)
+    path = g.DepthFirstSearch(0, 2)
+    assert path == []
+
+def test_dfs_handles_cycles_without_infinite_loop():
+    # треугольник 0-1-2-0 + хвост 2-3
+    g = SimpleGraph(4)
+    fill_vertices(g, 4)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 0)
+    g.AddEdge(2, 3)
+
+    path = g.DepthFirstSearch(0, 3)
+    assert is_valid_path(g, path, 0, 3)
+    # допустимые пути: 0-1-2-3 или 0-2-3; оба корректны
+
+def test_dfs_resets_hits_between_runs():
+    # «вилка»: 0-1, 0-2, 2-3
+    g = SimpleGraph(4)
+    fill_vertices(g, 4)
+    g.AddEdge(0, 1)
+    g.AddEdge(0, 2)
+    g.AddEdge(2, 3)
+
+    p1 = g.DepthFirstSearch(0, 3)
+    assert is_valid_path(g, p1, 0, 3)
+
+    # второй запуск не должен зависеть от флагов посещения первого
+    p2 = g.DepthFirstSearch(1, 3)
+    assert is_valid_path(g, p2, 1, 3)
+
+def test_dfs_invalid_indices_raise():
+    g = SimpleGraph(3)
+    fill_vertices(g, 2)  # индексы 0 и 1 существуют, 2 — нет
+    with pytest.raises(Exception):
+        g.DepthFirstSearch(-1, 1)
+    with pytest.raises(Exception):
+        g.DepthFirstSearch(0, 3)
+    with pytest.raises(Exception):
+        g.DepthFirstSearch(0, 2)  # вершина 2 ещё не добавлен
