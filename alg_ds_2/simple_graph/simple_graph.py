@@ -2,7 +2,7 @@ class Vertex:
 
     def __init__(self, val):
         self.Value = val
-        self.hit = False
+        self.Hit = False
 
 class SimpleGraph:
 
@@ -55,33 +55,55 @@ class SimpleGraph:
     def DepthFirstSearch(self, VFrom, VTo):
         self._check_exists(VFrom)
         self._check_exists(VTo)
-
         for v in self.vertex:
             if v is not None:
-                v.hit = False
-
+                v.Hit = False
         if VFrom == VTo:
-            self.vertex[VFrom].hit = True
+            self.vertex[VFrom].Hit = True
             return [self.vertex[VFrom]]
-
-        stack = []
-        self.vertex[VFrom].hit = True
-        stack.append(VFrom)
-
+        stack = [VFrom]
+        self.vertex[VFrom].Hit = True
         while stack:
             current = stack[-1]
-
             moved = False
             for nxt in range(self.max_vertex):
-                if self.m_adjacency[current][nxt] == 1 and self.vertex[nxt] is not None and not self.vertex[nxt].hit:
-                    self.vertex[nxt].hit = True
+                if self.m_adjacency[current][nxt] == 1 and self.vertex[nxt] is not None and not self.vertex[nxt].Hit:
+                    self.vertex[nxt].Hit = True
                     stack.append(nxt)
                     if nxt == VTo:
                         return [self.vertex[i] for i in stack]
                     moved = True
                     break
-
             if not moved:
                 stack.pop()
-
         return []
+
+    def BreadthFirstSearch(self, VFrom, VTo):
+        self._check_exists(VFrom)
+        self._check_exists(VTo)
+        for v in self.vertex:
+            if v is not None:
+                v.Hit = False
+        if VFrom == VTo:
+            self.vertex[VFrom].Hit = True
+            return [self.vertex[VFrom]]
+        parent = [None] * self.max_vertex
+        q = [VFrom]
+        self.vertex[VFrom].Hit = True
+        while q:
+            u = q.pop(0)
+            if u == VTo:
+                break
+            for v in range(self.max_vertex):
+                if self.m_adjacency[u][v] == 1 and self.vertex[v] is not None and not self.vertex[v].Hit:
+                    self.vertex[v].Hit = True
+                    parent[v] = u
+                    q.append(v)
+        if not self.vertex[VTo].Hit:
+            return []
+        path = []
+        cur = VTo
+        while cur is not None:
+            path.append(self.vertex[cur])
+            cur = parent[cur]
+        return list(reversed(path))
