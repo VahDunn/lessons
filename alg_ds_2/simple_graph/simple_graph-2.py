@@ -98,6 +98,9 @@ class SimpleGraph2(SimpleGraph):
             far = max(active, key=lambda x: dist[x])
             return far, dist
 
+        # Здесь вроде несложно - просто двойная bfs для поиска самого длинного пути (двойная чтобы удостовериться,
+        # потому что начинаем не обязательно с самой дальней точки)
+
         a = active[0]
         u, _ = bfs_far(a)
         v, dist = bfs_far(u)
@@ -165,3 +168,5 @@ class SimpleGraph2(SimpleGraph):
         edges.append((a, b))
         return tuple(sorted(edges))
 
+# поиск связей между ветвями дерева (идущие вверх и уже пройденные) + формирование списка циклов
+# сложно :(
