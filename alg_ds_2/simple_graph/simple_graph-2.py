@@ -136,6 +136,8 @@ class SimpleGraph2(SimpleGraph):
                             cycles.append(list(key))
         return cycles
 
+    # поиск связей между ветвями дерева (идущие вверх и уже пройденные) + формирование списка циклов
+    # сложно :(
     @staticmethod
     def _reconstruct_cycle(u, v, parent):
         pu = []
@@ -168,5 +170,42 @@ class SimpleGraph2(SimpleGraph):
         edges.append((a, b))
         return tuple(sorted(edges))
 
-# поиск связей между ветвями дерева (идущие вверх и уже пройденные) + формирование списка циклов
-# сложно :(
+    # в неориентированном графе - итерация по всем вершинам с поиском треугольников, с +1
+    # на каждую следующую переменную (чтобы не пересекались)
+    # O(n^3), что не очень быстро, но как быстрее что-то даже и не знаю
+    def CountTriangles(self):
+        idx = [i for i in range(self.max_vertex) if self.vertex[i] is not None]
+        cnt = 0
+        for a in range(len(idx)):
+            i = idx[a]
+            for b in range(a + 1, len(idx)):
+                j = idx[b]
+                if not self.IsEdge(i, j):
+                    continue
+                for c in range(b + 1, len(idx)):
+                    k = idx[c]
+                    if self.IsEdge(i, k) and self.IsEdge(j, k):
+                        cnt += 1
+        return cnt
+
+    # к adjacency обращения нет, только через IsEdge
+    def WeakVertices(self):
+        weak = []
+        for i in range(self.max_vertex):
+            if self.vertex[i] is None:
+                continue
+            neighbors = [j for j in range(self.max_vertex)
+                         if j != i and self.vertex[j] is not None and self.IsEdge(i, j)]
+            in_triangle = False
+            for a in range(len(neighbors)):
+                if in_triangle:
+                    break
+                for b in range(a + 1, len(neighbors)):
+                    u, v = neighbors[a], neighbors[b]
+                    if self.IsEdge(u, v):
+                        in_triangle = True
+                        break
+            if not in_triangle:
+                weak.append(self.vertex[i])
+        return weak
+

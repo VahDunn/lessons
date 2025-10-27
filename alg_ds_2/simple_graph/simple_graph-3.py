@@ -229,3 +229,77 @@ def test_bfs_invalid_indices_raise():
         g.BreadthFirstSearch(0, 3)
     with pytest.raises(Exception):
         g.BreadthFirstSearch(0, 2)
+
+def list_values(verts):
+    return [v.Value for v in verts]
+
+def test_weak_vertices_triangle_has_no_weak():
+    g = SimpleGraph(3)
+    fill_vertices(g, 3)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 0)
+    weak = g.WeakVertices()
+    assert weak == []
+
+def test_weak_vertices_single_edge_both_weak():
+    g = SimpleGraph(2)
+    fill_vertices(g, 2)
+    g.AddEdge(0, 1)
+    weak = g.WeakVertices()
+    assert set(list_values(weak)) == {"v0", "v1"}
+
+def test_weak_vertices_mixed_components_triangle_edge_isolated():
+    g = SimpleGraph(6)
+    fill_vertices(g, 6)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 0)
+    g.AddEdge(3, 4)
+    weak = g.WeakVertices()
+    assert set(list_values(weak)) == {"v3", "v4", "v5"}
+
+def test_weak_vertices_isolated_vertex_is_weak():
+    g = SimpleGraph(1)
+    g.AddVertex("A")
+    weak = g.WeakVertices()
+    assert list_values(weak) == ["A"]
+
+def test_weak_vertices_complete_graph_has_no_weak():
+    n = 4
+    g = SimpleGraph(n)
+    fill_vertices(g, n)
+    for i in range(n):
+        for j in range(i + 1, n):
+            g.AddEdge(i, j)
+    weak = g.WeakVertices()
+    assert weak == []
+
+def test_weak_vertices_holes_after_remove_vertex():
+    g = SimpleGraph(5)
+    fill_vertices(g, 5)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    g.AddEdge(2, 0)
+    g.RemoveVertex(1)
+    weak = g.WeakVertices()
+    assert set(list_values(weak)) == {"v0", "v2", "v3", "v4"}
+
+def test_weak_vertices_self_loop_does_not_create_triangle():
+    g = SimpleGraph(3)
+    fill_vertices(g, 3)
+    g.AddEdge(0, 1)
+    g.AddEdge(0, 2)
+    g.AddEdge(1, 1)
+    g.AddEdge(2, 2)
+    weak = g.WeakVertices()
+    assert set(list_values(weak)) == {"v0", "v1", "v2"}
+
+def test_weak_vertices_returns_vertex_objects():
+    g = SimpleGraph(4)
+    fill_vertices(g, 4)
+    g.AddEdge(0, 1)
+    g.AddEdge(1, 2)
+    weak = g.WeakVertices()
+    for v in weak:
+        assert any(v is gv for gv in g.vertex if gv is not None)

@@ -107,3 +107,28 @@ class SimpleGraph:
             path.append(self.vertex[cur])
             cur = parent[cur]
         return list(reversed(path))
+
+    def WeakVertices(self):
+        weak = []
+        for i in range(self.max_vertex):
+            if self.vertex[i] is None:
+                continue
+            neighbors = [
+                j for j in range(self.max_vertex)
+                if (
+                        j != i
+                        and self.m_adjacency[i][j] == 1
+                        and self.vertex[j] is not None
+                )
+            ]
+            found_triangle = False
+            for a in range(len(neighbors)):
+                for b in range(a + 1, len(neighbors)):
+                    if self.m_adjacency[neighbors[a]][neighbors[b]] == 1:
+                        found_triangle = True
+                        break
+                if found_triangle:
+                    break
+            if not found_triangle:
+                weak.append(self.vertex[i])
+        return weak
