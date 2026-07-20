@@ -516,7 +516,6 @@ def _is_owner_notifiable_before_evacuation(
         )
     )
 
-@staticmethod
 def _active_instances(
     instances: list[interfaces.NovaInstance],
 ) -> list[interfaces.NovaInstance]:
