@@ -107,8 +107,6 @@ def execute_step() -> None:
 
 
 def _can_send_before_migration_notification() -> bool:
-    # The order preserves the original short-circuit behavior: the helper
-    # checking the letter id is not called when mail or recipients are off.
     return (
         mediator.config.email.mail_send_enabled
         and bool(context.kwargs.get('client_emails'))
@@ -197,7 +195,6 @@ def _save_instances_to_notify(
 # 2 - было. ЦС 14
 
 def _maybe_notify_owner(self, instance: interfaces.NovaInstance) -> None:
-    """Use it as callback, alert owner when all instances are migrated."""
     hypervisor_state = self.context.get(
         expected_type=HypervisorState,
         key='hypervisor_state',
