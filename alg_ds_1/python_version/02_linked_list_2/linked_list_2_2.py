@@ -60,22 +60,25 @@ class LinkedList2:
         while current is not None:
             next_node = current.next
 
-            if current.value == val:
-                if current.prev is None:
-                    self.head = current.next
-                else:
-                    current.prev.next = current.next
+            if current.value != val:
+                current = next_node
+                continue
 
-                if current.next is None:
-                    self.tail = current.prev
-                else:
-                    current.next.prev = current.prev
+            if current.prev is None:
+                self.head = current.next
+            else:
+                current.prev.next = current.next
 
-                current.prev = None
-                current.next = None
+            if current.next is None:
+                self.tail = current.prev
+            else:
+                current.next.prev = current.prev
 
-                if not all:
-                    return
+            current.prev = None
+            current.next = None
+
+            if not all:
+                return
 
             current = next_node
 
@@ -148,47 +151,32 @@ class LinkedList2:
     # Временная сложность: O(n^2)
     # Пространственная сложность: O(1)
     def sort(self):
-        if self.head is None or self.head.next is None:
+        if self.head is None:
             return
 
-        sorted_head = None
+        before_first = Node(None)
+        after_last = Node(None)
+        before_first.next = after_last
+        after_last.prev = before_first
         current = self.head
 
         while current is not None:
             next_node = current.next
+            position = before_first.next
 
-            if sorted_head is None or current.value < sorted_head.value:
-                current.prev = None
-                current.next = sorted_head
+            while position is not after_last and position.value <= current.value:
+                position = position.next
 
-                if sorted_head is not None:
-                    sorted_head.prev = current
-
-                sorted_head = current
-            else:
-                position = sorted_head
-
-                while (
-                    position.next is not None
-                    and position.next.value <= current.value
-                ):
-                    position = position.next
-
-                current.next = position.next
-                current.prev = position
-
-                if position.next is not None:
-                    position.next.prev = current
-
-                position.next = current
-
+            current.prev = position.prev
+            current.next = position
+            position.prev.next = current
+            position.prev = current
             current = next_node
 
-        self.head = sorted_head
-        self.tail = self.head
-
-        while self.tail.next is not None:
-            self.tail = self.tail.next
+        self.head = before_first.next
+        self.tail = after_last.prev
+        self.head.prev = None
+        self.tail.next = None
 
     # Задание на курсе: 2
     # Задача: 2.13
@@ -201,12 +189,13 @@ class LinkedList2:
         right = other.head
 
         while left is not None and right is not None:
-            if left.value <= right.value:
-                result.add_in_tail(Node(left.value))
-                left = left.next
-            else:
+            if right.value < left.value:
                 result.add_in_tail(Node(right.value))
                 right = right.next
+                continue
+
+            result.add_in_tail(Node(left.value))
+            left = left.next
 
         while left is not None:
             result.add_in_tail(Node(left.value))
@@ -269,14 +258,17 @@ class LinkedList2WithDummy:
         while current is not self.tail:
             next_node = current.next
 
-            if current.value == val:
-                current.prev.next = current.next
-                current.next.prev = current.prev
-                current.prev = None
-                current.next = None
+            if current.value != val:
+                current = next_node
+                continue
 
-                if not all:
-                    return
+            current.prev.next = current.next
+            current.next.prev = current.prev
+            current.prev = None
+            current.next = None
+
+            if not all:
+                return
 
             current = next_node
 
@@ -306,6 +298,10 @@ class LinkedList2WithDummy:
 
     def reverse(self):
         first = self.head.next
+
+        if first is self.tail:
+            return
+
         last = self.tail.prev
         current = first
 
@@ -314,9 +310,6 @@ class LinkedList2WithDummy:
             current.next = current.prev
             current.prev = next_node
             current = next_node
-
-        if first is self.tail:
-            return
 
         self.head.next = last
         last.prev = self.head
@@ -370,12 +363,13 @@ class LinkedList2WithDummy:
         right = other.head.next
 
         while left is not self.tail and right is not other.tail:
-            if left.value <= right.value:
-                result.add_in_tail(Node(left.value))
-                left = left.next
-            else:
+            if right.value < left.value:
                 result.add_in_tail(Node(right.value))
                 right = right.next
+                continue
+
+            result.add_in_tail(Node(left.value))
+            left = left.next
 
         while left is not self.tail:
             result.add_in_tail(Node(left.value))

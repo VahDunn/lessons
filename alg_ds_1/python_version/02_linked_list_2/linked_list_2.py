@@ -60,24 +60,32 @@ class LinkedList2:
     # Пространственная сложность: O(1)
     def delete(self, val, all=False):
         current = self.head
+
         while current is not None:
             next_node = current.next
-            if current.value == val:
-                if current.prev is None:
-                    self.head = current.next
-                else:
-                    current.prev.next = current.next
-                if current.next is None:
-                    self.tail = current.prev
-                else:
-                    current.next.prev = current.prev
 
-                current.prev = None
-                current.next = None
+            if current.value != val:
+                current = next_node
+                continue
 
-                if not all:
-                    return
+            if current.prev is None:
+                self.head = current.next
+            else:
+                current.prev.next = current.next
+
+            if current.next is None:
+                self.tail = current.prev
+            else:
+                current.next.prev = current.prev
+
+            current.prev = None
+            current.next = None
+
+            if not all:
+                return
+
             current = next_node
+
     # Задание на курсе: 2
     # Задача: 2.7
     # Название: очистка списка

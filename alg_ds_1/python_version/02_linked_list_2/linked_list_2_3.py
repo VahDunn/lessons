@@ -42,14 +42,15 @@ def assert_list(linked_list, expected_nodes):
     assert backward_nodes == expected_nodes[::-1]
     assert linked_list.len() == len(expected_nodes)
 
-    if expected_nodes:
-        assert linked_list.head is expected_nodes[0]
-        assert linked_list.tail is expected_nodes[-1]
-        assert linked_list.head.prev is None
-        assert linked_list.tail.next is None
-    else:
+    if not expected_nodes:
         assert linked_list.head is None
         assert linked_list.tail is None
+        return
+
+    assert linked_list.head is expected_nodes[0]
+    assert linked_list.tail is expected_nodes[-1]
+    assert linked_list.head.prev is None
+    assert linked_list.tail.next is None
 
 
 def build_dummy_list(*values):
@@ -87,14 +88,15 @@ def assert_dummy_list(linked_list, expected_nodes):
     assert backward_nodes == expected_nodes[::-1]
     assert linked_list.len() == len(expected_nodes)
 
-    if expected_nodes:
-        assert linked_list.head.next is expected_nodes[0]
-        assert expected_nodes[0].prev is linked_list.head
-        assert linked_list.tail.prev is expected_nodes[-1]
-        assert expected_nodes[-1].next is linked_list.tail
-    else:
+    if not expected_nodes:
         assert linked_list.head.next is linked_list.tail
         assert linked_list.tail.prev is linked_list.head
+        return
+
+    assert linked_list.head.next is expected_nodes[0]
+    assert expected_nodes[0].prev is linked_list.head
+    assert linked_list.tail.prev is expected_nodes[-1]
+    assert expected_nodes[-1].next is linked_list.tail
 
 
 # Основные тесты для linked_list_2.py
