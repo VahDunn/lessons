@@ -69,8 +69,8 @@ class LinkedList2:
                     current.prev.next = current.next
                 if current.next is None:
                     self.tail = current.prev
-                    continue
-                current.next.prev = current.prev
+                else:
+                    current.next.prev = current.prev
                 if not all:
                     return
             current = next_node
@@ -105,7 +105,7 @@ class LinkedList2:
     # Пространственная сложность: O(1)
     def insert(self, afterNode, newNode):
         if afterNode is None:
-            self.add_in_tail(newNode)
+            self.add_in_head(newNode)
             return
         newNode.prev = afterNode
         newNode.next = afterNode.next

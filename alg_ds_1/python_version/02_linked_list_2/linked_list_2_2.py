@@ -1,74 +1,43 @@
-from linked_list_2 import LinkedList2 as BaseLinkedList2, Node
+class Node:
+
+    def __init__(self, v):
+        self.value = v
+        self.prev = None
+        self.next = None
 
 
-class LinkedList2(BaseLinkedList2):
+class LinkedList2:
 
-    def _first_node(self):
-        return self.head
-
-    def _last_node(self):
-        return self.tail
-
-    def _before_first_node(self):
-        return None
-
-    def _after_last_node(self):
-        return None
-
-    def _insert_between(self, left, new_node, right):
-        new_node.prev = left
-        new_node.next = right
-
-        if left is None:
-            self.head = new_node
-        else:
-            left.next = new_node
-
-        if right is None:
-            self.tail = new_node
-        else:
-            right.prev = new_node
-
-    def _unlink(self, node):
-        left = node.prev
-        right = node.next
-
-        if left is None:
-            self.head = right
-        else:
-            left.next = right
-
-        if right is None:
-            self.tail = left
-        else:
-            right.prev = left
-
-        node.prev = None
-        node.next = None
-
-    def _reset(self):
+    def __init__(self):
         self.head = None
         self.tail = None
 
     def add_in_tail(self, item):
-        self._insert_between(
-            self._last_node(),
-            item,
-            self._after_last_node(),
-        )
+        item.prev = self.tail
+        item.next = None
+
+        if self.tail is None:
+            self.head = item
+        else:
+            self.tail.next = item
+
+        self.tail = item
 
     def add_in_head(self, new_node):
-        self._insert_between(
-            self._before_first_node(),
-            new_node,
-            self._first_node(),
-        )
+        new_node.prev = None
+        new_node.next = self.head
+
+        if self.head is None:
+            self.tail = new_node
+        else:
+            self.head.prev = new_node
+
+        self.head = new_node
 
     def find(self, val):
-        current = self._first_node()
-        end = self._after_last_node()
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             if current.value == val:
                 return current
             current = current.next
@@ -77,10 +46,9 @@ class LinkedList2(BaseLinkedList2):
 
     def find_all(self, val):
         result = []
-        current = self._first_node()
-        end = self._after_last_node()
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             if current.value == val:
                 result.append(current)
             current = current.next
@@ -88,14 +56,24 @@ class LinkedList2(BaseLinkedList2):
         return result
 
     def delete(self, val, all=False):
-        current = self._first_node()
-        end = self._after_last_node()
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             next_node = current.next
 
             if current.value == val:
-                self._unlink(current)
+                if current.prev is None:
+                    self.head = current.next
+                else:
+                    current.prev.next = current.next
+
+                if current.next is None:
+                    self.tail = current.prev
+                else:
+                    current.next.prev = current.prev
+
+                current.prev = None
+                current.next = None
 
                 if not all:
                     return
@@ -103,25 +81,33 @@ class LinkedList2(BaseLinkedList2):
             current = next_node
 
     def clean(self):
-        self._reset()
+        self.head = None
+        self.tail = None
 
     def len(self):
         count = 0
-        current = self._first_node()
-        end = self._after_last_node()
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             count += 1
             current = current.next
 
         return count
 
-    def insert(self, afterNode, newNode):
-        if afterNode is None:
-            self.add_in_head(newNode)
+    def insert(self, after_node, new_node):
+        if after_node is None:
+            self.add_in_head(new_node)
             return
 
-        self._insert_between(afterNode, newNode, afterNode.next)
+        new_node.prev = after_node
+        new_node.next = after_node.next
+
+        if after_node.next is None:
+            self.tail = new_node
+        else:
+            after_node.next.prev = new_node
+
+        after_node.next = new_node
 
     # Задание на курсе: 2
     # Задача: 2.10
@@ -129,25 +115,15 @@ class LinkedList2(BaseLinkedList2):
     # Временная сложность: O(n)
     # Пространственная сложность: O(1)
     def reverse(self):
-        current = self._first_node()
-        end = self._after_last_node()
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             next_node = current.next
-            self._unlink(current)
-            self.add_in_head(current)
+            current.next = current.prev
+            current.prev = next_node
             current = next_node
 
-    def _next_data_node(self, node):
-        if node is None:
-            return None
-
-        next_node = node.next
-
-        if next_node is self._after_last_node():
-            return None
-
-        return next_node
+        self.head, self.tail = self.tail, self.head
 
     # Задание на курсе: 2
     # Задача: 2.11
@@ -155,22 +131,12 @@ class LinkedList2(BaseLinkedList2):
     # Временная сложность: O(n)
     # Пространственная сложность: O(1)
     def has_cycle(self):
-        first = self._first_node()
+        slow = self.head
+        fast = self.head
 
-        if first is self._after_last_node():
-            return False
-
-        slow = first
-        fast = first
-
-        while fast is not None:
-            fast = self._next_data_node(fast)
-
-            if fast is None:
-                return False
-
-            slow = self._next_data_node(slow)
-            fast = self._next_data_node(fast)
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
 
             if slow is fast:
                 return True
@@ -183,37 +149,47 @@ class LinkedList2(BaseLinkedList2):
     # Временная сложность: O(n^2)
     # Пространственная сложность: O(1)
     def sort(self):
-        current = self._first_node()
-        end = self._after_last_node()
-
-        if current is end:
+        if self.head is None or self.head.next is None:
             return
 
-        current = current.next
+        sorted_head = None
+        current = self.head
 
-        while current is not end:
+        while current is not None:
             next_node = current.next
-            position = current.prev
 
-            if position.value <= current.value:
-                current = next_node
-                continue
+            if sorted_head is None or current.value < sorted_head.value:
+                current.prev = None
+                current.next = sorted_head
 
-            self._unlink(current)
-            before_first = self._before_first_node()
+                if sorted_head is not None:
+                    sorted_head.prev = current
 
-            while (
-                position is not before_first
-                and position.value > current.value
-            ):
-                position = position.prev
-
-            if position is before_first:
-                self.add_in_head(current)
+                sorted_head = current
             else:
-                self._insert_between(position, current, position.next)
+                position = sorted_head
+
+                while (
+                    position.next is not None
+                    and position.next.value <= current.value
+                ):
+                    position = position.next
+
+                current.next = position.next
+                current.prev = position
+
+                if position.next is not None:
+                    position.next.prev = current
+
+                position.next = current
 
             current = next_node
+
+        self.head = sorted_head
+        self.tail = self.head
+
+        while self.tail.next is not None:
+            self.tail = self.tail.next
 
     # Задание на курсе: 2
     # Задача: 2.13
@@ -221,13 +197,11 @@ class LinkedList2(BaseLinkedList2):
     # Временная сложность: O(n + m)
     # Пространственная сложность: O(n + m)
     def merge(self, other):
-        result = type(self)()
-        left = self._first_node()
-        right = other._first_node()
-        left_end = self._after_last_node()
-        right_end = other._after_last_node()
+        result = LinkedList2()
+        left = self.head
+        right = other.head
 
-        while left is not left_end and right is not right_end:
+        while left is not None and right is not None:
             if left.value <= right.value:
                 result.add_in_tail(Node(left.value))
                 left = left.next
@@ -235,11 +209,11 @@ class LinkedList2(BaseLinkedList2):
                 result.add_in_tail(Node(right.value))
                 right = right.next
 
-        while left is not left_end:
+        while left is not None:
             result.add_in_tail(Node(left.value))
             left = left.next
 
-        while right is not right_end:
+        while right is not None:
             result.add_in_tail(Node(right.value))
             right = right.next
 
@@ -249,53 +223,173 @@ class LinkedList2(BaseLinkedList2):
 # Задание на курсе: 2
 # Задача: 2.14
 # Название: двунаправленный список с фиктивными узлами
-# Временная сложность: O(1) для граничных вставок, O(n) для поиска и удаления
-# Пространственная сложность: O(1) дополнительной памяти
-class DummyNode(Node):
-    def __init__(self):
-        super().__init__(None)
+class LinkedList2WithDummy:
 
-
-class LinkedList2WithDummy(LinkedList2):
     def __init__(self):
-        super().__init__()
-        self.head = DummyNode()
-        self.tail = DummyNode()
+        self.head = Node(None)
+        self.tail = Node(None)
         self.head.next = self.tail
         self.tail.prev = self.head
 
-    def _first_node(self):
-        return self.head.next
+    def add_in_tail(self, item):
+        item.prev = self.tail.prev
+        item.next = self.tail
+        self.tail.prev.next = item
+        self.tail.prev = item
 
-    def _last_node(self):
-        return self.tail.prev
+    def add_in_head(self, new_node):
+        new_node.prev = self.head
+        new_node.next = self.head.next
+        self.head.next.prev = new_node
+        self.head.next = new_node
 
-    def _before_first_node(self):
-        return self.head
+    def find(self, val):
+        current = self.head.next
 
-    def _after_last_node(self):
-        return self.tail
+        while current is not self.tail:
+            if current.value == val:
+                return current
+            current = current.next
 
-    @staticmethod
-    def _insert_between(left, new_node, right):
-        left.next = new_node
-        new_node.prev = left
-        new_node.next = right
-        right.prev = new_node
+        return None
 
-    @staticmethod
-    def _unlink(node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
-        node.prev = None
-        node.next = None
+    def find_all(self, val):
+        result = []
+        current = self.head.next
 
-    def _reset(self):
+        while current is not self.tail:
+            if current.value == val:
+                result.append(current)
+            current = current.next
+
+        return result
+
+    def delete(self, val, all=False):
+        current = self.head.next
+
+        while current is not self.tail:
+            next_node = current.next
+
+            if current.value == val:
+                current.prev.next = current.next
+                current.next.prev = current.prev
+                current.prev = None
+                current.next = None
+
+                if not all:
+                    return
+
+            current = next_node
+
+    def clean(self):
         self.head.next = self.tail
         self.tail.prev = self.head
+
+    def len(self):
+        count = 0
+        current = self.head.next
+
+        while current is not self.tail:
+            count += 1
+            current = current.next
+
+        return count
+
+    def insert(self, after_node, new_node):
+        if after_node is None:
+            self.add_in_head(new_node)
+            return
+
+        new_node.prev = after_node
+        new_node.next = after_node.next
+        after_node.next.prev = new_node
+        after_node.next = new_node
+
+    def reverse(self):
+        first = self.head.next
+        last = self.tail.prev
+        current = first
+
+        while current is not self.tail:
+            next_node = current.next
+            current.next = current.prev
+            current.prev = next_node
+            current = next_node
+
+        if first is self.tail:
+            return
+
+        self.head.next = last
+        last.prev = self.head
+        self.tail.prev = first
+        first.next = self.tail
+
+    def has_cycle(self):
+        slow = self.head.next
+        fast = self.head.next
+
+        while fast is not self.tail and fast.next is not self.tail:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow is fast:
+                return True
+
+        return False
+
+    def sort(self):
+        current = self.head.next
+
+        if current is self.tail:
+            return
+
+        current = current.next
+
+        while current is not self.tail:
+            next_node = current.next
+            position = current.prev
+
+            if position.value <= current.value:
+                current = next_node
+                continue
+
+            current.prev.next = current.next
+            current.next.prev = current.prev
+
+            while position is not self.head and position.value > current.value:
+                position = position.prev
+
+            current.prev = position
+            current.next = position.next
+            position.next.prev = current
+            position.next = current
+            current = next_node
+
+    def merge(self, other):
+        result = LinkedList2WithDummy()
+        left = self.head.next
+        right = other.head.next
+
+        while left is not self.tail and right is not other.tail:
+            if left.value <= right.value:
+                result.add_in_tail(Node(left.value))
+                left = left.next
+            else:
+                result.add_in_tail(Node(right.value))
+                right = right.next
+
+        while left is not self.tail:
+            result.add_in_tail(Node(left.value))
+            left = left.next
+
+        while right is not other.tail:
+            result.add_in_tail(Node(right.value))
+            right = right.next
+
+        return result
 
 
 # Рефлексия
-# Самой сложной снова оказалась сортировка. О(n^2), немного печально. Зато почитал про merge sort.
-# С Dummy узлом действительно проще/удобнее. На доп задания отнаследовался, удобнее.
-# Merge, reverse просто несложные, а has cycles я где-то видел что через 2 указателя решается :)
+# Самой сложной снова оказалась сортировка. O(n^2), немного печально.
+# Зато почитал про merge sort.
+# С dummy-узлами действительно проще работать с границами списка.
