@@ -13,14 +13,13 @@ class LinkedList2:
         self.tail = None
 
     def add_in_tail(self, item):
-        item.prev = self.tail
-        item.next = None
-
-        if self.tail is None:
+        if self.head is None:
             self.head = item
+            item.prev = None
+            item.next = None
         else:
             self.tail.next = item
-
+            item.prev = self.tail
         self.tail = item
 
     def add_in_head(self, new_node):
@@ -96,7 +95,7 @@ class LinkedList2:
 
     def insert(self, after_node, new_node):
         if after_node is None:
-            self.add_in_head(new_node)
+            self.add_in_tail(new_node)
             return
 
         new_node.prev = after_node
@@ -297,7 +296,7 @@ class LinkedList2WithDummy:
 
     def insert(self, after_node, new_node):
         if after_node is None:
-            self.add_in_head(new_node)
+            self.add_in_tail(new_node)
             return
 
         new_node.prev = after_node

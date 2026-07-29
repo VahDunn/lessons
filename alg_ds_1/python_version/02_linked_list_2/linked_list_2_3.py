@@ -8,7 +8,7 @@ def build_list(*values):
     nodes = [Node(value) for value in values]
 
     for node in nodes:
-        linked_list.add_in_tail(node)
+        linked_list.add_in_tail(item=node)
 
     return linked_list, nodes
 
@@ -103,7 +103,7 @@ def assert_dummy_list(linked_list, expected_nodes):
 def test_find_in_empty_list():
     linked_list = LinkedList2()
 
-    assert linked_list.find(1) is None
+    assert linked_list.find(val=1) is None
 
 
 def test_find_returns_first_matching_node():
@@ -121,7 +121,7 @@ def test_find_returns_none_when_value_is_absent():
 def test_find_all_in_empty_list():
     linked_list = LinkedList2()
 
-    assert linked_list.find_all(1) == []
+    assert linked_list.find_all(val=1) == []
 
 
 def test_find_all_returns_all_matching_nodes():
@@ -136,15 +136,20 @@ def test_find_all_returns_empty_list_when_value_is_absent():
     assert linked_list.find_all(10) == []
 
 
-def test_insert_after_node_and_at_head():
+def test_insert_after_node_and_with_none():
+    empty_list = LinkedList2()
+    only_node = Node(1)
+    empty_list.insert(afterNode=None, newNode=only_node)
+    assert_list(empty_list, [only_node])
+
     linked_list, nodes = build_list(1, 3)
-    first = Node(0)
     middle = Node(2)
+    last = Node(4)
 
-    linked_list.insert(nodes[0], middle)
-    linked_list.insert(None, first)
+    linked_list.insert(afterNode=nodes[0], newNode=middle)
+    linked_list.insert(afterNode=None, newNode=last)
 
-    assert_list(linked_list, [first, nodes[0], middle, nodes[1]])
+    assert_list(linked_list, [nodes[0], middle, nodes[1], last])
 
 
 def test_add_in_head():
@@ -152,7 +157,7 @@ def test_add_in_head():
     nodes = [Node(2), Node(1)]
 
     for node in nodes:
-        linked_list.add_in_head(node)
+        linked_list.add_in_head(newNode=node)
 
     assert_list(linked_list, nodes[::-1])
 
@@ -207,14 +212,16 @@ def test_delete_removes_node_from_middle():
     linked_list, nodes = build_list(1, 2, 3)
 
     linked_list.delete(2)
-
     assert_list(linked_list, [nodes[0], nodes[2]])
+
+    linked_list.add_in_tail(nodes[1])
+    assert_list(linked_list, [nodes[0], nodes[2], nodes[1]])
 
 
 def test_delete_updates_tail():
     linked_list, nodes = build_list(1, 2, 3)
 
-    linked_list.delete(3)
+    linked_list.delete(val=3, all=False)
 
     assert_list(linked_list, [nodes[0], nodes[1]])
 
@@ -330,14 +337,14 @@ def test_dummy_list_find_ignores_dummy_nodes():
 
 def test_dummy_list_insert_and_delete():
     linked_list, nodes = build_dummy_list(1, 3, 1)
-    first = ExtendedNode(0)
     middle = ExtendedNode(2)
+    last = ExtendedNode(4)
 
     linked_list.insert(nodes[0], middle)
-    linked_list.insert(None, first)
+    linked_list.insert(None, last)
     linked_list.delete(1, all=True)
 
-    assert_dummy_list(linked_list, [first, middle, nodes[1]])
+    assert_dummy_list(linked_list, [middle, nodes[1], last])
 
 
 def test_dummy_list_algorithms():
