@@ -14,7 +14,7 @@ class Stack:
     # Пространственная сложность: O(1)
     def pop(self):
         if self.size() == 0:
-            raise IndexError('Stack is empty')
+            return None
 
         return self.stack.pop(0)
 
@@ -29,6 +29,6 @@ class Stack:
     # Пространственная сложность: O(1)
     def peek(self):
         if self.size() == 0:
-            raise IndexError('Stack is empty')
+            return None
 
         return self.stack[0]

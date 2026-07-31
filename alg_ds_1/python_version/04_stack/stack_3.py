@@ -43,16 +43,13 @@ def test_pop():
     assert stack.pop() == '2'
     assert stack.pop() == 1
     assert stack.size() == 0
-
-    with pytest.raises(IndexError, match='Stack is empty'):
-        stack.pop()
+    assert stack.pop() is None
 
 
 def test_peek():
     stack = Stack()
 
-    with pytest.raises(IndexError, match='Stack is empty'):
-        stack.peek()
+    assert stack.peek() is None
 
     stack.push(1)
     stack.push('2')
@@ -120,8 +117,8 @@ def test_brackets_balance(sequence, expected):
 def test_get_min():
     stack = ExtendedStack()
 
-    with pytest.raises(IndexError, match='Stack is empty'):
-        stack.get_min()
+    assert stack.pop() is None
+    assert stack.get_min() is None
 
     for value, expected_minimum in (
         (3, 3),
@@ -139,16 +136,13 @@ def test_get_min():
     assert stack.pop() == 1
     assert stack.get_min() == 3
     assert stack.pop() == 3
-
-    with pytest.raises(IndexError, match='Stack is empty'):
-        stack.get_min()
+    assert stack.get_min() is None
 
 
 def test_get_average():
     stack = ExtendedStack()
 
-    with pytest.raises(IndexError, match='Stack is empty'):
-        stack.get_average()
+    assert stack.get_average() is None
 
     stack.push(2)
     assert stack.get_average() == 2

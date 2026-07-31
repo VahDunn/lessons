@@ -29,6 +29,9 @@ class Stack(BaseStack):
     # Временная сложность: O(n)
     # Пространственная сложность: O(1)
     def pop(self):
+        if self.size() == 0:
+            return None
+
         value = super().pop()
         self.total -= value
 
@@ -52,7 +55,7 @@ class Stack(BaseStack):
     # Пространственная сложность: O(1)
     def get_average(self):
         if self.size() == 0:
-            raise IndexError('Stack is empty')
+            return None
 
         return self.total / self.size()
 
@@ -63,7 +66,7 @@ class Stack(BaseStack):
 # Ответ:
 # При чётном количестве элементов цикл напечатает их попарно и опустошит стек.
 # При нечётном количестве первый pop() последней итерации напечатает оставшийся
-# элемент, а второй pop() вызовет IndexError, потому что стек уже будет пуст.
+# элемент, а второй pop() напечатает None, потому что стек уже будет пуст.
 
 
 # Задание на курсе: 4
