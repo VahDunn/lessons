@@ -126,6 +126,7 @@ def is_brackets_balanced_ext(sequence):
 # Название: вычисление постфиксного выражения
 # Временная сложность: O(n^2) для текущей реализации стека
 # Пространственная сложность: O(n)
+# ответ - 59 :)
 def evaluate_postfix(expression):
     input_stack = BaseStack()
     result_stack = BaseStack()
