@@ -6,6 +6,12 @@ class Node:
         self.next = None
 
 
+class DummyNode(Node):
+
+    def __init__(self):
+        super().__init__(None)
+
+
 class LinkedList2:
 
     def __init__(self):
@@ -214,8 +220,8 @@ class LinkedList2:
 class LinkedList2WithDummy:
 
     def __init__(self):
-        self.head = Node(None)
-        self.tail = Node(None)
+        self.head = DummyNode()
+        self.tail = DummyNode()
         self.head.next = self.tail
         self.tail.prev = self.head
 
@@ -234,7 +240,7 @@ class LinkedList2WithDummy:
     def find(self, val):
         current = self.head.next
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             if current.value == val:
                 return current
             current = current.next
@@ -245,7 +251,7 @@ class LinkedList2WithDummy:
         result = []
         current = self.head.next
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             if current.value == val:
                 result.append(current)
             current = current.next
@@ -255,7 +261,7 @@ class LinkedList2WithDummy:
     def delete(self, val, all=False):
         current = self.head.next
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             next_node = current.next
 
             if current.value != val:
@@ -280,7 +286,7 @@ class LinkedList2WithDummy:
         count = 0
         current = self.head.next
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             count += 1
             current = current.next
 
@@ -299,13 +305,13 @@ class LinkedList2WithDummy:
     def reverse(self):
         first = self.head.next
 
-        if first is self.tail:
+        if isinstance(first, DummyNode):
             return
 
         last = self.tail.prev
         current = first
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             next_node = current.next
             current.next = current.prev
             current.prev = next_node
@@ -320,7 +326,10 @@ class LinkedList2WithDummy:
         slow = self.head.next
         fast = self.head.next
 
-        while fast is not self.tail and fast.next is not self.tail:
+        while (
+            not isinstance(fast, DummyNode)
+            and not isinstance(fast.next, DummyNode)
+        ):
             slow = slow.next
             fast = fast.next.next
 
@@ -332,12 +341,12 @@ class LinkedList2WithDummy:
     def sort(self):
         current = self.head.next
 
-        if current is self.tail:
+        if isinstance(current, DummyNode):
             return
 
         current = current.next
 
-        while current is not self.tail:
+        while not isinstance(current, DummyNode):
             next_node = current.next
             position = current.prev
 
@@ -348,7 +357,10 @@ class LinkedList2WithDummy:
             current.prev.next = current.next
             current.next.prev = current.prev
 
-            while position is not self.head and position.value > current.value:
+            while (
+                not isinstance(position, DummyNode)
+                and position.value > current.value
+            ):
                 position = position.prev
 
             current.prev = position
@@ -362,7 +374,10 @@ class LinkedList2WithDummy:
         left = self.head.next
         right = other.head.next
 
-        while left is not self.tail and right is not other.tail:
+        while (
+            not isinstance(left, DummyNode)
+            and not isinstance(right, DummyNode)
+        ):
             if right.value < left.value:
                 result.add_in_tail(Node(right.value))
                 right = right.next
@@ -371,11 +386,11 @@ class LinkedList2WithDummy:
             result.add_in_tail(Node(left.value))
             left = left.next
 
-        while left is not self.tail:
+        while not isinstance(left, DummyNode):
             result.add_in_tail(Node(left.value))
             left = left.next
 
-        while right is not other.tail:
+        while not isinstance(right, DummyNode):
             result.add_in_tail(Node(right.value))
             right = right.next
 

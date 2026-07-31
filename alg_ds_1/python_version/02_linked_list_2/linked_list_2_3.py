@@ -1,6 +1,7 @@
 from linked_list_2 import LinkedList2, Node
 from linked_list_2_2 import LinkedList2 as ExtendedLinkedList2
-from linked_list_2_2 import LinkedList2WithDummy, Node as ExtendedNode
+from linked_list_2_2 import DummyNode, LinkedList2WithDummy
+from linked_list_2_2 import Node as ExtendedNode
 
 
 def build_list(*values):
@@ -65,6 +66,8 @@ def build_dummy_list(*values):
 
 def assert_dummy_list(linked_list, expected_nodes):
     assert linked_list.head is not linked_list.tail
+    assert isinstance(linked_list.head, DummyNode)
+    assert isinstance(linked_list.tail, DummyNode)
     assert linked_list.head.value is None
     assert linked_list.tail.value is None
     assert linked_list.head.prev is None
@@ -332,6 +335,7 @@ def test_dummy_list_boundaries():
 def test_dummy_list_find_ignores_dummy_nodes():
     linked_list, nodes = build_dummy_list(None, 1, None, 2)
 
+    assert all(not isinstance(node, DummyNode) for node in nodes)
     assert linked_list.find(None) is nodes[0]
     assert linked_list.find_all(None) == [nodes[0], nodes[2]]
     assert linked_list.find(10) is None
