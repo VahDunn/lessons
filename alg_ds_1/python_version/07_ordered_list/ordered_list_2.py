@@ -50,17 +50,10 @@ class OrderedList(BaseOrderedList):
         right = other.head
 
         while left is not None and right is not None:
-            comparison = self.compare(left.value, right.value)
-            take_left = (
-                self._is_ascending() and comparison <= 0
-                or not self._is_ascending() and comparison >= 0
-            )
-
-            if take_left:
+            if self._should_take_left(left.value, right.value):
                 result._append_indexed_value(left.value)
                 left = left.next
                 continue
-
             result._append_indexed_value(right.value)
             right = right.next
 
@@ -189,6 +182,14 @@ class OrderedList(BaseOrderedList):
         self._append_node(node)
         self._index.append(node)
 
+    def _should_take_left(self, left_value, right_value):
+        comparison = self.compare(left_value, right_value)
+
+        if self._is_ascending():
+            return comparison <= 0
+
+        return comparison >= 0
+
     def _rebuild_index(self):
         self._index = self.get_all()
 
@@ -198,4 +199,4 @@ class OrderedList(BaseOrderedList):
 # но я поэтому и запомнил :)
 # И в целом прием разворачивания не-массивов через стек кажется удобным.
 # С круговой очередью описание (и задача) кажутся намного сложнее, чем по факту есть.
-# А код написал - и норм. 
+# А код написал - и норм.
