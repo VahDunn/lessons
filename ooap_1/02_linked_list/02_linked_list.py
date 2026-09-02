@@ -75,9 +75,9 @@ class LinkedList(Generic[T]):
         # отсутствует
         #
         # постусловие:
-        # создан новый пустой список;
-        # size() == 0;
-        # is_value(), is_head() и is_tail() возвращают False;
+        # создан новый пустой список
+        # size() == 0
+        # is_value(), is_head() и is_tail() возвращают False
         # статусы всех операций установлены в *_NIL
 
         self._head: Optional[_Node[T]] = None
@@ -248,7 +248,24 @@ class LinkedList(Generic[T]):
         # статус remove установлен в REMOVE_ERR
 
         if self._cursor is not None:
-            self._unlink(self._cursor)
+            removed = self._cursor
+            left = removed.prev
+            right = removed.next
+
+            if left is None:
+                self._head = right
+            else:
+                left.next = right
+
+            if right is None:
+                self._tail = left
+            else:
+                right.prev = left
+
+            self._cursor = right if right is not None else left
+            removed.prev = None
+            removed.next = None
+            self._size -= 1
             self._remove_status = self.REMOVE_OK
         else:
             self._remove_status = self.REMOVE_ERR
@@ -288,7 +305,7 @@ class LinkedList(Generic[T]):
         # список пустой
         #
         # постусловие при выполнении предусловия:
-        # в список добавлен единственный элемент value;
+        # в список добавлен единственный элемент value
         # курсор установлен на этот элемент
         # head и tail указывают на этот элемент
         # size() == 1
@@ -346,7 +363,7 @@ class LinkedList(Generic[T]):
         # статус replace установлен в REPLACE_OK
         #
         # если предусловие нарушено:
-        # список и курсор не изменяются;
+        # список и курсор не изменяются
         # статус replace установлен в REPLACE_ERR
 
         if self._cursor is not None:
@@ -368,7 +385,7 @@ class LinkedList(Generic[T]):
         # статус find установлен в FIND_OK
         #
         # если список пуст или подходящего элемента справа нет:
-        # список и курсор не изменяются;
+        # список и курсор не изменяются
         # статус find установлен в FIND_ERR
 
         found: Optional[_Node[T]] = None
@@ -392,11 +409,11 @@ class LinkedList(Generic[T]):
         # отсутствует
         #
         # постусловие:
-        # из списка удалены все элементы со значением value;
-        # размер списка уменьшен на количество удалённых элементов;
-        # если текущий элемент не удалён, положение курсора не изменилось;
+        # из списка удалены все элементы со значением value
+        # размер списка уменьшен на количество удалённых элементов
+        # если текущий элемент не удалён, положение курсора не изменилось
         # если текущий элемент удалён, курсор установлен на ближайший
-        # оставшийся элемент справа, иначе на ближайший оставшийся слева;
+        # оставшийся элемент справа, иначе на ближайший оставшийся слева
         # если список стал пустым, курсор не установлен
 
         current = self._head
@@ -405,7 +422,25 @@ class LinkedList(Generic[T]):
             next_node = current.next
 
             if current.value == value:
-                self._unlink(current)
+                left = current.prev
+                right = current.next
+
+                if left is None:
+                    self._head = right
+                else:
+                    left.next = right
+
+                if right is None:
+                    self._tail = left
+                else:
+                    right.prev = left
+
+                if current is self._cursor:
+                    self._cursor = right if right is not None else left
+
+                current.prev = None
+                current.next = None
+                self._size -= 1
 
             current = next_node
 
@@ -418,13 +453,13 @@ class LinkedList(Generic[T]):
         # список не пустой
         #
         # результат при выполнении предусловия:
-        # возвращено значение текущего элемента;
-        # список и курсор не изменяются;
+        # возвращено значение текущего элемента
+        # список и курсор не изменяются
         # статус get установлен в GET_OK
         #
         # если предусловие нарушено:
-        # возвращается None;
-        # список и курсор не изменяются;
+        # возвращается None
+        # список и курсор не изменяются
         # статус get установлен в GET_ERR
 
         result: Optional[T] = None
@@ -442,7 +477,7 @@ class LinkedList(Generic[T]):
         # отсутствует
         #
         # результат:
-        # возвращено текущее количество элементов в списке;
+        # возвращено текущее количество элементов в списке
         # список и курсор не изменяются
 
         result = self._size
@@ -455,7 +490,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращается True, только если список не пустой и курсор установлен
-        # на первый элемент; для пустого списка возвращается False;
+        # на первый элемент, для пустого списка возвращается False
         # список и курсор не изменяются
 
         result = self._cursor is not None and self._cursor is self._head
@@ -468,7 +503,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращается True, только если список не пустой и курсор установлен
-        # на последний элемент; для пустого списка возвращается False;
+        # на последний элемент, для пустого списка возвращается False
         # список и курсор не изменяются
 
         result = self._cursor is not None and self._cursor is self._tail
@@ -480,8 +515,8 @@ class LinkedList(Generic[T]):
         # отсутствует
         #
         # результат:
-        # возвращается True, если курсор установлен на элемент списка;
-        # возвращается False для пустого списка;
+        # возвращается True, если курсор установлен на элемент списка
+        # возвращается False для пустого списка
         # список и курсор не изменяются
 
         result = self._cursor is not None
@@ -496,7 +531,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова head():
-        # HEAD_NIL, HEAD_OK или HEAD_ERR;
+        # HEAD_NIL, HEAD_OK или HEAD_ERR
         # состояние списка не изменяется
 
         result = self._head_status
@@ -509,7 +544,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова tail():
-        # TAIL_NIL, TAIL_OK или TAIL_ERR;
+        # TAIL_NIL, TAIL_OK или TAIL_ERR
         # состояние списка не изменяется
 
         result = self._tail_status
@@ -522,7 +557,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова right():
-        # RIGHT_NIL, RIGHT_OK или RIGHT_ERR;
+        # RIGHT_NIL, RIGHT_OK или RIGHT_ERR
         # состояние списка не изменяется
 
         result = self._right_status
@@ -535,7 +570,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова get():
-        # GET_NIL, GET_OK или GET_ERR;
+        # GET_NIL, GET_OK или GET_ERR
         # состояние списка не изменяется
 
         result = self._get_status
@@ -548,7 +583,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова put_right():
-        # PUT_RIGHT_NIL, PUT_RIGHT_OK или PUT_RIGHT_ERR;
+        # PUT_RIGHT_NIL, PUT_RIGHT_OK или PUT_RIGHT_ERR
         # состояние списка не изменяется
 
         result = self._put_right_status
@@ -561,7 +596,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова put_left():
-        # PUT_LEFT_NIL, PUT_LEFT_OK или PUT_LEFT_ERR;
+        # PUT_LEFT_NIL, PUT_LEFT_OK или PUT_LEFT_ERR
         # состояние списка не изменяется
 
         result = self._put_left_status
@@ -574,7 +609,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова remove():
-        # REMOVE_NIL, REMOVE_OK или REMOVE_ERR;
+        # REMOVE_NIL, REMOVE_OK или REMOVE_ERR
         # состояние списка не изменяется
 
         result = self._remove_status
@@ -587,7 +622,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова add_to_empty():
-        # ADD_TO_EMPTY_NIL, ADD_TO_EMPTY_OK или ADD_TO_EMPTY_ERR;
+        # ADD_TO_EMPTY_NIL, ADD_TO_EMPTY_OK или ADD_TO_EMPTY_ERR
         # состояние списка не изменяется
 
         result = self._add_to_empty_status
@@ -600,7 +635,7 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова replace():
-        # REPLACE_NIL, REPLACE_OK или REPLACE_ERR;
+        # REPLACE_NIL, REPLACE_OK или REPLACE_ERR
         # состояние списка не изменяется
 
         result = self._replace_status
@@ -613,36 +648,17 @@ class LinkedList(Generic[T]):
         #
         # результат:
         # возвращён статус последнего вызова find():
-        # FIND_NIL, FIND_OK или FIND_ERR;
+        # FIND_NIL, FIND_OK или FIND_ERR
         # состояние списка не изменяется
 
         result = self._find_status
 
         return result
 
-    # закрытые операции реализации
-
-    def _unlink(self, node: _Node[T]) -> None:
-        """Удаляет известный внутренний узел за O(1)."""
-
-        left = node.prev
-        right = node.next
-
-        if left is None:
-            self._head = right
-        else:
-            left.next = right
-
-        if right is None:
-            self._tail = left
-        else:
-            right.prev = left
-
-        if node is self._cursor:
-            self._cursor = right if right is not None else left
-
-        node.prev = None
-        node.next = None
-        self._size -= 1
-
-        return None
+# 2.2
+# Если исходить из эффективной реализации - чтобы не пришлось обходить весь список ради получения его последнего
+# элемента.
+# 2.3
+# Потому что мы используем только курсор и некие значения (которые нам отдаются "на лету"), то есть,
+# Никаких "узлов" связный список нам не предоставляет. Мы можем на его основании сформировать свою структуру данных, но
+# базово доступен только указатель и значение, и получить мы можем только последнее.
