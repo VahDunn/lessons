@@ -202,3 +202,26 @@ class BoundedStack(Generic[T]):
         result = self._peek_status
 
         return result
+
+
+
+
+class Node:
+
+    def __init__(self, v):
+        self.value = v
+        self.next = None
+
+class LinkedList:
+
+    def __init__(self):
+        self.pointer = None
+
+    # commands
+    # предусловие - список не пуст
+    # постусловие если предусловие соблюдается - поинтер указывает на первый элемент
+    # если предусловие не соблюдается - никаких изменений, head_status = HEAD_ERR
+    # д
+
+    def head(self) -> None:
+        cur = self.pointer
