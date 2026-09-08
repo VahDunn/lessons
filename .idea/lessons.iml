@@ -5,6 +5,10 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/hard_work/09_mcp/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/mcp/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/vim_trainer/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/agent_automation/examples/work-review/.venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (lessons)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

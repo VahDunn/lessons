@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vim-confidence-trainer"
+version = "1.0.0"
+description = "Практический курс по Vim с терминальным и web-интерфейсом"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["aiohttp>=3.10,<4"]
+
+[project.scripts]
+vim-trainer = "vim_trainer.presentation.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["vim_trainer*"]
+
+[tool.setuptools.package-data]
+"vim_trainer.presentation" = ["web_assets/*.html", "web_assets/*.css", "web_assets/*.js"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
