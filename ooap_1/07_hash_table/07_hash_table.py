@@ -256,7 +256,7 @@ class HashTable(Generic[T]):
     def _find_slot_for_put(self, value: T) -> Optional[int]:
         # Возвращает слот для нового value либо None, если value уже существует
         # или вставка невозможна. Первый удалённый слот запоминается, но поиск
-        # продолжается: дальше в цепочке может находиться равное значение.
+        # продолжается тк дальше в цепочке может находиться равное значение.
 
         start = hash(value) % self._max_size
         first_deleted: Optional[int] = None
