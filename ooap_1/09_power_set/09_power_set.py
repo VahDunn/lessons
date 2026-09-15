@@ -338,10 +338,11 @@ class PowerSet(HashTable[T]):
 
         result = PowerSet[T](min(self._max_size, other._max_size))
 
-        if self.size() <= other.size():
-            source = self
-            target = other
-        else:
+
+        source = self
+        target = other
+
+        if self.size() >= other.size():
             source = other
             target = self
 
