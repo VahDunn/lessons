@@ -1,0 +1,26 @@
+class Animal:
+    def speak(self) -> None:
+        print("Животное издаёт звук")
+
+
+class Dog(Animal):
+    def speak(self) -> None:
+        print("Гав")
+
+
+class Cat(Animal):
+    def speak(self) -> None:
+        print("Мяу")
+
+
+def make_sound(animal: Animal) -> None:
+    animal.speak()
+
+
+dog = Dog()
+cat = Cat()
+
+make_sound(dog)  # гав
+make_sound(cat)  # мяу
+
+Собственно, получается, что конкретный взываемый метод разрешается динамически, при подстановке подкласса
