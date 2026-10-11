@@ -1,0 +1,78 @@
+class General(object):
+    def copy_to(self, target: Self, deep: bool = False) -> None:
+        if type(self) is not type(target):
+            raise TypeError("Объекты должны иметь одинаковый тип")
+
+        if deep:
+            target.__dict__ = copy.deepcopy(self.__dict__)
+        else:
+            target.__dict__ = copy.copy(self.__dict__)
+
+
+    def clone(self, deep: bool = True) -> Self:
+        if deep:
+            return copy.deepcopy(self)
+        return copy.copy(self)
+
+
+    def equals(self, other: object, deep: bool = True) -> bool:
+        if type(self) is not type(other):
+            return False
+
+        if deep:
+            return self.__dict__ == other.__dict__
+
+        return self is other
+
+
+    def serialize(self) -> str:
+        data = pickle.dumps(self)
+        return base64.b64encode(data).decode("ascii")
+
+
+    @classmethod
+    def deserialize(cls, data: str) -> Self:
+        raw = base64.b64decode(data.encode("ascii"))
+        obj = pickle.loads(raw)
+
+        if not isinstance(obj, cls):
+            raise TypeError("Десериализован объект другого типа")
+
+        return obj
+
+
+    def __str__(self) -> str:
+        return f"{type(self).__name__}({self.__dict__})"
+
+
+    def is_type(self, cls: type) -> bool:
+        return isinstance(self, cls)
+
+
+    def get_type(self) -> type:
+        return type(self)
+
+
+class Any(General):
+    pass
+```
+
+И тогда прикладной класс:
+
+class Animal(Any):
+    def __init__(self, name: str):
+        self.name = name
+
+
+animal = Animal("Barsik")
+
+С доступом ко всем операциям.
+clone = animal.clone()
+print(animal.equals(clone))
+print(animal)
+print(animal.is_type(Animal))
+print(animal.is_type(Any))
+print(animal.is_type(General))
+print(animal.get_type())
+data = animal.serialize()
+restored = Animal.deserialize(data)
