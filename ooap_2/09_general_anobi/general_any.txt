@@ -15,14 +15,11 @@ class General(object):
         return copy.copy(self)
 
 
-    def equals(self, other: object, deep: bool = True) -> bool:
-        if type(self) is not type(other):
-            return False
-
-        if deep:
-            return self.__dict__ == other.__dict__
-
-        return self is other
+    def equals(self, other: object) -> bool:
+        return (
+            type(self) is type(other)
+            and self.__dict__ == other.__dict__
+        )
 
 
     def serialize(self) -> str:
